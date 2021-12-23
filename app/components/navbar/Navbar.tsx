@@ -36,10 +36,13 @@ export default function Navbar() {
           </SubMenu>
           <SubMenu key="settings" icon={<PicLeftOutlined />} title={<b>{t("navbar:settings")}</b>}>
             <Menu.Item key="category">
-               <a onClick={()=>router.push('/order')}><b>{t("navbar:category")}</b></a>
+               <a onClick={()=>router.push('/category')}><b>{t("navbar:category")}</b></a>
             </Menu.Item>
             <Menu.Item key="tag">
-               <a onClick={()=>router.push('/order')}><b>{t("navbar:tag")}</b></a>
+               <a onClick={()=>router.push('/tag')}><b>{t("navbar:tag")}</b></a>
+            </Menu.Item>
+            <Menu.Item key="slider">
+               <a onClick={()=>router.push('/slider')}><b>{t("navbar:slider")}</b></a>
             </Menu.Item>
           </SubMenu>
           <Menu.Item key="/password">

@@ -2,13 +2,10 @@ import Head from 'next/head'
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useRouter } from 'next/router';
-import Link from "../../app/components/link/Link";
+import Category from "../../app/components/tag/Tag";
 
-export default function LinkPage() {
+export default function TagPage() {
   const router = useRouter();
-  const role = useSelector(
-    (state: RootState) => state.authModel.role
-  );
   /** Start Page Access Check */
     const token = useSelector(
       (state: RootState) => state.authModel.token
@@ -22,9 +19,9 @@ export default function LinkPage() {
   return (
     <>
       <Head>
-        <title>Link Page</title>
+        <title>TagPage Page</title>
       </Head>
-      <Link />
+      <Category />
     </>
   )
 }

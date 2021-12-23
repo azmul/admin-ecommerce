@@ -4,7 +4,9 @@ const API = VERSION_URL + "/api"
 
 /** Private endpoint URLs */
 const ADMIN = API + "/admin";
-const LINK = API + "/link";
+const CATEGORY = API + "/category";
+const TAG = API + "/tag";
+const SLIDER = API + "/slider";
 const PATIENT = API + "/patient";
 const HOMEOPATHY = API + "/homeopathy"
 const HOMEOPATHY_DOCTOR = API + "/homeopathy/doctor";
@@ -21,8 +23,9 @@ const AYURVEDIC_DOCTOR = API + "/ayurvedic/doctor";
  */
 export const Endpoints = Object.freeze({
   ADMIN: ADMIN,
-  LINK: LINK,
-  LINK_COUNT: LINK + "/count",
+  CATEGORY: CATEGORY,
+  TAG: TAG,
+  SLIDER: SLIDER,
   PATIENT: PATIENT,
   PATIENT_ADMIN: PATIENT + "/admin",
   HOMEOPATHY_DOCTOR: HOMEOPATHY_DOCTOR,

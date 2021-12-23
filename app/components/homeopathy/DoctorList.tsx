@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import React, { useState, useEffect, useCallback } from "react";
 import {message, Table, Button, Card, Form, Input} from 'antd';
 import * as homeopathyApi from "./HomeopathyApi";
