@@ -1,0 +1,1 @@
+export { default as authModel } from "../app/components/login/LoginModel";

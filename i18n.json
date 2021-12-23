@@ -1,0 +1,15 @@
+{
+    "locales": ["en", "bn"],
+    "defaultLocale": "bn",
+    "pages": {
+      "*": ["common", "setting", "navbar", "appointment", "table", "form"],
+      "/login": ["login", "doctor", "patient"],
+      "/patient": ["patient"],
+      "/patient/[id]": ["patient"],
+      "/order": ["table"],
+      "/order/[id]": ["order"],
+      "/homeopathy/doctors": ["doctor"],
+      "/ayurvedic/doctors": ["doctor"]
+    }
+  }
+  

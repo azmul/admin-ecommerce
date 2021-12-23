@@ -1,0 +1,18 @@
+{
+    "blogList": "Blog List",
+    "noBlog": "There is no blog",
+    "details": "Details",
+    "loadingMore": "loading more ...",
+    "edit": "Edit",
+    "specialist": "Specialist",
+    "institution": "Institution",
+    "editBlog": "Edit Blog",
+    "title": "Title",
+    "titleVerification": "Please give blog title",
+    "contentVerification": "Please give blog content",
+    "blogUpdated": "Blog updated Successfully",
+    "typeHereBlog": "The blog goes here...",
+    "save": "Save",
+    "createBlog": "Create Blog",
+    "blogCreated": "New blog created Successfully"
+}

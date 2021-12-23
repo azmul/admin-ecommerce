@@ -1,0 +1,18 @@
+{
+    "schedule": "Schedule",
+    "sunday": "Sunday",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sundayTimeSlot": "Select sunday's appointment time slots",
+    "mondayTimeSlot": "Select monday's appointment time slots",
+    "tuesdayTimeSlot": "Select tuesday's appointment time slots",
+    "wednesdayTimeSlot": "Select wednesday's appointment time slots",
+    "thrusdayTimeSlot": "Select thrusday's appointment time slots",
+    "fridayTimeSlot": "Select friday's appointment time slots",
+    "saturdayTimeSlot": "Select saturday's appointment time slots",
+    "saveSchedule": "Save Schedule"
+}

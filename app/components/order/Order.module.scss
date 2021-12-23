@@ -1,0 +1,54 @@
+.marginRight10{
+    margin-right: 8px;
+}
+
+@media (max-width: 40em) { 
+    .createAppointmentCard,
+    .editAppointmentCard,
+    .detailsAppointmentCard {
+        padding: 5px;
+        :global(.ant-card-body) {
+            padding: 5px
+        }
+    }
+    
+}
+
+@media (max-width: 40em) { 
+    .customTable {
+        :global(.ant-card-body) {
+            padding: 5px
+        }
+        :global(.responsiveTable) { 
+            tbody {
+                tr { 
+                    border: 1px solid #e6e1e1;
+                    margin-bottom: 16px;
+                }}
+        } }
+}
+
+
+
+@media (min-width: 40em) {
+   
+    .customTable {
+        :global(.responsiveTable) {
+            thead {
+                text-align: left;
+                background-color: #fafafa;
+                :global(th) {
+                   padding: 14px
+                }
+            }
+            tbody {
+                tr {
+                    border-bottom: 1px solid #f1eded;
+                    td {
+                       padding: 14px 
+                    }
+                }
+            }
+        }
+    }
+}

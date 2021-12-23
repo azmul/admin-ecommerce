@@ -1,0 +1,116 @@
+.container {
+  max-width: 55rem;
+  padding: 0 10px;
+  margin: 0rem auto 6rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.backToHome {
+  margin: 3rem 0 0;
+}
+
+.logo{
+  color: #ffffff;
+  font-size: 20px;
+  margin-left: 26px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.loginPadding{
+  padding: 15px 5px;
+}
+
+.profileImageSection{
+  margin-right: 10px;
+  height: 45px;
+  margin-top: -10px;
+  img{
+    border-radius: 50%;
+  }
+}
+
+.siteLayoutSubHeaderBackground{
+  height: 50px;
+}
+
+.ant-layout-footer{
+  margin-top: 0;
+}
+
+.siteLayoutBackground{
+  padding: 14px;
+}
+
+.languageButton{
+  margin-right: 15px;
+  margin-top: -3px;
+}
+
+.siteLayoutSubHeaderBackground{
+  background-color: #ffffff;
+  box-shadow: 0 1px 4px rgb(0 21 41 / 12%);
+}
+
+.sidebar{
+  :global(.ant-layout-sider-zero-width-trigger) {
+    top: 4px;
+  }
+}
+
+.menuLink {
+  a {
+    margin-top: -8px;
+    font-size: 16px;
+    margin-right: 10px;
+  }
+  
+}
+
+@media (max-width: 600px) {
+  .sidebar{
+    :global(.ant-layout-sider-zero-width-trigger) {
+      right: -44px;
+      width: 42px;
+      height: 37px;
+      line-height: 36px;
+      top: 2px;
+      z-index: 2;
+      .anticon anticon-bars {
+        font-size: 22px;
+      }
+    }
+  }
+
+  .siteLayoutBackground{
+    padding: 5px 3px;
+  }
+  .siteLayoutSubHeaderBackground{
+    height: 42px;
+  }
+
+  .languageButton{
+    margin-top: -5px;
+  }
+  
+  .profileImageSection{
+    margin-right: 10px;
+    height: 38px;
+    margin-top: -13px;
+  }
+
+  .menuLink {
+    a {
+      margin-top: -12px;
+      font-size: 16px;
+      margin-right: 10px;
+    }
+    
+  }
+
+}
