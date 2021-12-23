@@ -39,27 +39,6 @@ const Recovery = () => {
          }
       };
 
-      const sendOpt = async () => {
-        const phone  = form.getFieldValue('phone');
-        try {
-         setIsSendOtp(true);
-         const response:any = await recoverApi.adminPhoneVerify(phone);
-
-         message.success({
-          content: `${t("appointment:verificationCodeSent")} ${response.to}. ${t("appointment:verificationCodeUse")}`,
-          style: {
-             marginTop: '20vh',
-           },
-           duration: 10,
-         });
-         
-        } catch(error: any) {
-          message.error(error?.message);
-        } finally {
-         setIsSendOtp(false);
-        }
-     }
-
       return (
         <ErrorBoundary FallbackComponent={ErrorFallback}>
           <Card className={styles.recoveryForm} title={t("form:resetPassword")}>
@@ -79,20 +58,7 @@ const Recovery = () => {
                    <Input type="number" placeholder="0xxxxxxxxxx" addonBefore={"+88"} />
                </Form.Item>
               </Col>
-              <Col xs={24} md={5}>
-                  <Button onClick={sendOpt} loading={isSendOtp} type="primary">
-                     {t("form:sentOpt")}
-                  </Button>
-              </Col>
             </Row>
-
-          <Form.Item
-            label={t("form:verificationCode")}
-            name="code"
-            rules={[{ required: true, message: t("form:verificationCodeVerification") }]}
-          >
-            <Input />
-          </Form.Item>
     
           <Form.Item
              label={t("form:newPassword")}
