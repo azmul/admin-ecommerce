@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Menu } from 'antd';
-import { LogoutOutlined,ToolOutlined, ControlOutlined, UserOutlined, HomeOutlined, BorderInnerOutlined, PicLeftOutlined } from '@ant-design/icons';
+import { LogoutOutlined,ToolOutlined, TableOutlined, UserOutlined, HomeOutlined, PicLeftOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import { useStore } from "../../../redux/hooks";
 import {ErrorBoundary} from 'react-error-boundary'
@@ -29,11 +29,9 @@ export default function Navbar() {
           <Menu.Item key="/patient"  icon={<UserOutlined />}>
             <Link key="99" passHref={true} href="/patient"><b>{t("navbar:orders")}</b></Link>
           </Menu.Item>
-          <SubMenu key="product" icon={<PicLeftOutlined />} title={<b>{t("navbar:products")}</b>}>
-            <Menu.Item key="product">
-            <a onClick={()=>router.push('/order')}><b>{t("navbar:productList")}</b></a>
-            </Menu.Item>
-          </SubMenu>
+          <Menu.Item key="products" icon={<TableOutlined />}>
+            <a onClick={()=>router.push('/products')}><b>{t("navbar:products")}</b></a>
+          </Menu.Item>
           <SubMenu key="settings" icon={<PicLeftOutlined />} title={<b>{t("navbar:settings")}</b>}>
             <Menu.Item key="category">
                <a onClick={()=>router.push('/category')}><b>{t("navbar:category")}</b></a>

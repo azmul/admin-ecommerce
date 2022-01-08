@@ -3,6 +3,13 @@ import { Endpoints } from "../../api/apiConst";
 import { ApiResponse } from "../../api/models";
 import {ItemType} from "./CategoryType";
 
+export const getAllItems = async (): Promise<ApiResponse<any>> => {
+  const url = `${Endpoints.CATEGORY}/all`;
+  
+  const resp = await api.get<ApiResponse<any>>(url);
+  return resp.data;
+};
+
 export const getItems = async (params?: any): Promise<ApiResponse<any>> => {
   const url = Endpoints.CATEGORY;
   

@@ -9,6 +9,7 @@ const TAG = API + "/tag";
 const SLIDER = API + "/slider";
 const TESTIMONIAL = API + "/testimonial";
 const IMAGE = API + "/image";
+const PRODUCTS = API + "/products";
 const PATIENT = API + "/patient";
 const HOMEOPATHY = API + "/homeopathy"
 const HOMEOPATHY_DOCTOR = API + "/homeopathy/doctor";
@@ -30,6 +31,7 @@ export const Endpoints = Object.freeze({
   SLIDER: SLIDER,
   TESTIMONIAL: TESTIMONIAL,
   IMAGE: IMAGE,
+  PRODUCTS: PRODUCTS,
   PATIENT: PATIENT,
   PATIENT_ADMIN: PATIENT + "/admin",
   HOMEOPATHY_DOCTOR: HOMEOPATHY_DOCTOR,

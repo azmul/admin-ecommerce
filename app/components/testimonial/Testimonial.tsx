@@ -199,7 +199,7 @@ export default function Link() {
       }
     >
       <Drawer
-        title={create ? "Create Slider" : "Update Slider"}
+        title={create ? "Create Testimonial" : "Update Testimonial"}
         placement="right"
         onClose={closeDrawer}
         visible={visible}
