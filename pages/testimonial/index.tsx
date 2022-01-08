@@ -1,14 +1,11 @@
 import Head from 'next/head'
 import { useSelector } from "react-redux";
-import { RootState } from "../redux/store";
+import { RootState } from "../../redux/store";
 import { useRouter } from 'next/router';
-import { Card } from "antd";
-import useTranslation from 'next-translate/useTranslation'
-import HomePage from "../app/components/home";
+import Testimonial from "../../app/components/testimonial/Testimonial";
 
-export default function Home() {
+export default function TestimonialPage() {
   const router = useRouter();
-  const { t } = useTranslation();
   /** Start Page Access Check */
     const token = useSelector(
       (state: RootState) => state.authModel.token
@@ -22,12 +19,9 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Home</title>
+        <title>Testimonial Page</title>
       </Head>
-      <Card>
-        <h1>{t("common:youAdmin")}</h1>
-        <HomePage />
-      </Card>
+      <Testimonial />
     </>
   )
 }

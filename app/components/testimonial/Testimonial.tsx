@@ -11,9 +11,9 @@ import {
   Space,
   Popconfirm,
 } from "antd";
-import * as SliderApi from "./SliderApi";
+import * as TestimonialApi from "./TestimonialApi";
 import useTranslation from "next-translate/useTranslation";
-import ImageUploader from "../imageUploader/";
+import ImageUploader from "../imageUploader";
 
 export default function Link() {
   const [visible, setVisible] = useState(false);
@@ -39,14 +39,19 @@ export default function Link() {
       key: "title_local",
     },
     {
-      title: "Sub Title",
-      dataIndex: "subtitle",
-      key: "subtitle",
+      title: "Content Title",
+      dataIndex: "content",
+      key: "content",
     },
     {
-      title: "Sub Title",
-      dataIndex: "subtitle_local",
-      key: "subtitle_local",
+      title: "Content Local Title",
+      dataIndex: "content_local",
+      key: "content_local",
+    },
+    {
+      title: "Customer name",
+      dataIndex: "customer_name",
+      key: "customer_name",
     },
     {
       title: "Action",
@@ -75,8 +80,8 @@ export default function Link() {
       setloading(true);
 
       create
-        ? await SliderApi.createItem(values)
-        : await SliderApi.updateItem(item?._id, values);
+        ? await TestimonialApi.createItem(values)
+        : await TestimonialApi.updateItem(item?._id, values);
 
       message.success({
         content: `${create ? "Created" : "Updated"} Sucessfully`,
@@ -102,14 +107,13 @@ export default function Link() {
     setImageData([]);
     try {
       setloading(true);
-      const item: any = await SliderApi.getItem(id);
+      const item: any = await TestimonialApi.getItem(id);
       form.setFieldsValue({
         title: item.title,
         title_local: item.title_local,
-        subtitle: item.subtitle,
-        subtitle_local: item.subtitle_local,
-        image: item.image,
-        url: item.url
+        content: item.subtitle,
+        content_local: item.subtitle_local,
+        customer_name: item.customer_name
       });
 
       if(item.image) {
@@ -136,17 +140,16 @@ export default function Link() {
     form.setFieldsValue({
       title: null,
       title_local: null,
-      subtitle: null,
-      subtitle_local: null,
-      image: null,
-      url: null
+      content: null,
+      content_local: null,
+      customer_name: null,
     });
   };
 
   const confirm = async () => {
     try {
       setloading(true);
-      await SliderApi.deleteItem(item?._id);
+      await TestimonialApi.deleteItem(item?._id);
       setVisible(false);
       getItems(params);
     } catch (error: any) {
@@ -168,7 +171,7 @@ export default function Link() {
 
     try {
       setloading(true);
-      const response: any = await SliderApi.getItems({ ...params });
+      const response: any = await TestimonialApi.getItems({ ...params });
       setItems(response?.data);
       setpagination(response?.pagination);
     } catch (error: any) {
@@ -188,7 +191,7 @@ export default function Link() {
 
   return (
     <Card
-      title="Slider List"
+      title="Testimonial List"
       extra={
         <Button type="primary" onClick={() => handleCreate(true)}>
           Create New
@@ -202,6 +205,13 @@ export default function Link() {
         visible={visible}
       >
         <Form layout="vertical" form={form} onFinish={onFinish}>
+          <Form.Item
+            label="Customer Name"
+            name="customer_name"
+            rules={[{ required: true, message: "Please give customer name" }]}
+          >
+            <Input placeholder="Customer Name" />
+          </Form.Item>
           <Form.Item
             label="Title"
             name="title"
@@ -217,33 +227,26 @@ export default function Link() {
             <Input placeholder="title local" />
           </Form.Item>
           <Form.Item
-            label="Subtitle"
-            name="subtitle"
-            rules={[{ required: true, message: "Please give subtitle name" }]}
+            label="Content"
+            name="content"
+            rules={[{ required: true, message: "Please give Content" }]}
           >
-            <Input placeholder="subtitle name" />
+            <Input placeholder="Content" />
           </Form.Item>
           <Form.Item
-            label="Subtitle"
-            name="subtitle_local"
-            rules={[{ required: true, message: "Please give subtitle local name" }]}
+            label="Content Local"
+            name="content_local"
+            rules={[{ required: true, message: "Please give Content local" }]}
           >
-            <Input placeholder="subtitle local name" />
+            <Input placeholder="Content local name" />
           </Form.Item>
           <Form.Item
             label="Image"
-            name="images"
             rules={[{ message: "Please give image" }]}
           >
             <ImageUploader data={imageData} maxImageNumber={1} uploadPreset="sliders" handleImages={getImages} />
           </Form.Item>
-          <Form.Item
-            label="Url"
-            name="url"
-            rules={[{ required: true, message: "Please give url" }]}
-          >
-            <Input placeholder="url" />
-          </Form.Item>
+          
           <Form.Item>
             <Space size="middle">
               <Button type="primary" htmlType="submit">
