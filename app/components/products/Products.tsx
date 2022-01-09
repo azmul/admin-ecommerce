@@ -25,7 +25,6 @@ import { capitalize } from "lodash";
 import styles from "./Styles.module.scss";
 import { UserOutlined } from '@ant-design/icons';
 
-
 const { Option } = Select;
 
 export default function Link() {
@@ -33,6 +32,7 @@ export default function Link() {
   const [create, setCreate] = useState(false);
   const [loading, setloading] = useState(false);
   const [form] = Form.useForm();
+  const [formSearch] = Form.useForm();
   const { t } = useTranslation("ns1");
   const [items, setItems] = useState([]);
   const [item, setItem] = useState<any>(undefined);
@@ -48,12 +48,12 @@ export default function Link() {
 
   const columns: any = [
     {
-      title: "Number ID",
-      dataIndex: "number_id",
-      key: "number_id",
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
       // eslint-disable-next-line react/display-name
       render: (_name: string, record: any) =>
-        record?.is_active ? record?.number_id : <del>{record?.number_id}</del>,
+        record?.is_active ? record?.id : <del>{record?.id}</del>,
     },
     {
       title: "Name",
@@ -160,6 +160,7 @@ export default function Link() {
         fullDescription_local: item.fullDescription_local,
         is_active: item.is_active,
         comment: item.comment,
+        stock: item.stock,
       });
 
       setItem(item);
@@ -202,6 +203,7 @@ export default function Link() {
       fullDescription_local: null,
       is_active: true,
       comment: null,
+      stock: null,
     });
   };
 
@@ -350,6 +352,7 @@ export default function Link() {
           >
             <Input placeholder="Offer End local" />
           </Form.Item>
+          
           <Form.Item name="new">
             <Radio.Group>
               <Radio.Button value={true}>New</Radio.Button>
@@ -439,6 +442,13 @@ export default function Link() {
                 ))}
             </Select>
           </Form.Item>
+          <Form.Item
+            label="Stock"
+            name="stock"
+            rules={[{ required: true, message: "Please give Stock" }]}
+          >
+            <Input type="number" placeholder="Stock" />
+          </Form.Item>
           <Form.Item name="is_active">
             <Radio.Group>
               <Radio.Button value={true}>Active</Radio.Button>
@@ -457,7 +467,7 @@ export default function Link() {
           )}
 
           <Form.Item label="Comment" name="comment">
-            <Input.TextArea placeholder="Give Comment" />
+            <Input.TextArea placeholder="Leave a Comment" />
           </Form.Item>
 
           <Form.Item>
@@ -479,7 +489,7 @@ export default function Link() {
           </Form.Item>
         </Form>
       </Drawer>
-      <Form className={styles.searchForm} form={form} name="horizontal_login" layout="inline" onFinish={onSearch}>
+      <Form className={styles.searchForm} form={formSearch} name="horizontal_login" layout="inline" onFinish={onSearch}>
           <Form.Item
             name="id"
             rules={[{ required: true, message: "Give Product Numeric ID"  }]}

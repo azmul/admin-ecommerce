@@ -10,9 +10,15 @@ import {
   Table,
   Space,
   Popconfirm,
+  Radio,
 } from "antd";
 import * as CategoryApi from "./CategoryApi";
 import useTranslation from "next-translate/useTranslation";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
+import moment from "moment";
+import { capitalize } from "lodash";
+
 
 export default function Link() {
   const [visible, setVisible] = useState(false);
@@ -24,12 +30,18 @@ export default function Link() {
   const [item, setItem] = useState<any>(undefined);
   const [params, setParams] = useState<any>(undefined);
   const [pagination, setpagination] = useState({});
+  const profile: any = useSelector(
+    (state: RootState) => state.authModel.profile
+  );
 
   const columns: any = [
     {
       title: "Name",
       dataIndex: "name",
-      key: "phone",
+      key: "name",
+      // eslint-disable-next-line react/display-name
+      render: (_name: string, record: any) =>
+        record?.is_active ? record?.name : <del>{record?.name}</del>,
     },
     {
       title: "Local Name",
@@ -37,12 +49,20 @@ export default function Link() {
       key: "name_local",
     },
     {
+      title: "Active",
+      dataIndex: "is_active",
+      key: "is_active",
+      // eslint-disable-next-line react/display-name
+      render: (_name: string, record: any) =>
+        record?.is_active ? "Yes" : "No",
+    },
+    {
       title: "Action",
       key: "action",
       // eslint-disable-next-line react/display-name
       render: (record: any) => (
         <Space size="middle">
-          <Button onClick={() => handleEdit(record?._id)} type="primary">
+          <Button onClick={() => handleEdit(record?._id)} type={record?.is_active ? "primary" : "ghost"}>
             {" "}
             Edit
           </Button>
@@ -53,6 +73,7 @@ export default function Link() {
 
   const onFinish = async (values: any) => {
     try {
+      values.last_updated_by = profile?.name;
       setloading(true);
 
       create
@@ -86,6 +107,7 @@ export default function Link() {
       form.setFieldsValue({
         name: item.name,
         name_local: item.name_local,
+        is_active: item.is_active,
       });
       setItem(item);
     } catch (error: any) {
@@ -101,6 +123,7 @@ export default function Link() {
     form.setFieldsValue({
       name: null,
       name_local: null,
+      is_active: true,
     });
   };
 
@@ -173,6 +196,28 @@ export default function Link() {
           >
             <Input placeholder="local name" />
           </Form.Item>
+
+          <Form.Item name="is_active">
+            <Radio.Group>
+              <Radio.Button value={true}>Active</Radio.Button>
+              <Radio.Button value={false}>Not Active</Radio.Button>
+            </Radio.Group>
+          </Form.Item>
+
+          {!create && (
+            <Form.Item label="Last Updated By">
+              <div>
+                Name:{" "}
+                {item && item?.last_updated_by ? item?.last_updated_by : "N/A"}
+              </div>
+              <div>Time: {item && capitalize(moment(item?.updatedAt).fromNow())}</div>
+            </Form.Item>
+          )}
+
+          <Form.Item label="Comment" name="comment">
+            <Input.TextArea placeholder="Leave a Comment" />
+          </Form.Item>
+
           <Form.Item>
             <Space size="middle">
               <Button type="primary" htmlType="submit">

@@ -10,10 +10,15 @@ import {
   Table,
   Space,
   Popconfirm,
+  Radio,
 } from "antd";
 import * as TestimonialApi from "./TestimonialApi";
 import useTranslation from "next-translate/useTranslation";
 import ImageUploader from "../imageUploader";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
+import moment from "moment";
+import { capitalize } from "lodash";
 
 export default function Link() {
   const [visible, setVisible] = useState(false);
@@ -27,11 +32,18 @@ export default function Link() {
   const [pagination, setpagination] = useState({});
   const [imageData, setImageData] = useState<any>([]);
 
+  const profile: any = useSelector(
+    (state: RootState) => state.authModel.profile
+  );
+
   const columns: any = [
     {
       title: "Title",
       dataIndex: "title",
       key: "title",
+      // eslint-disable-next-line react/display-name
+      render: (title: string, record: any) =>
+        record?.is_active ? record?.title : <del>{record?.title}</del>,
     },
     {
       title: "Title Local",
@@ -54,12 +66,20 @@ export default function Link() {
       key: "customer_name",
     },
     {
+      title: "Active",
+      dataIndex: "is_active",
+      key: "is_active",
+      // eslint-disable-next-line react/display-name
+      render: (_name: string, record: any) =>
+        record?.is_active ? "Yes" : "No",
+    },
+    {
       title: "Action",
       key: "action",
       // eslint-disable-next-line react/display-name
       render: (record: any) => (
         <Space size="middle">
-          <Button onClick={() => handleEdit(record?._id)} type="primary">
+          <Button onClick={() => handleEdit(record?._id)} type={record?.is_active ? "primary" : "ghost"}>
             {" "}
             Edit
           </Button>
@@ -77,6 +97,7 @@ export default function Link() {
       values.public_id = null;
     }
     try {
+      values.last_updated_by = profile?.name;
       setloading(true);
 
       create
@@ -111,9 +132,10 @@ export default function Link() {
       form.setFieldsValue({
         title: item.title,
         title_local: item.title_local,
-        content: item.subtitle,
-        content_local: item.subtitle_local,
-        customer_name: item.customer_name
+        content: item.content,
+        content_local: item.content_local,
+        customer_name: item.customer_name,
+        is_active: item.is_active,
       });
 
       if(item.image) {
@@ -137,12 +159,14 @@ export default function Link() {
   const handleCreate = (value: boolean) => {
     setCreate(value);
     setVisible(true);
+    setImageData([]);
     form.setFieldsValue({
       title: null,
       title_local: null,
       content: null,
       content_local: null,
       customer_name: null,
+      is_active: true,
     });
   };
 
@@ -245,6 +269,27 @@ export default function Link() {
             rules={[{ message: "Please give image" }]}
           >
             <ImageUploader data={imageData} maxImageNumber={1} uploadPreset="sliders" handleImages={getImages} />
+          </Form.Item>
+
+          <Form.Item name="is_active">
+            <Radio.Group>
+              <Radio.Button value={true}>Active</Radio.Button>
+              <Radio.Button value={false}>Not Active</Radio.Button>
+            </Radio.Group>
+          </Form.Item>
+
+          {!create && (
+            <Form.Item label="Last Updated By">
+              <div>
+                Name:{" "}
+                {item && item?.last_updated_by ? item?.last_updated_by : "N/A"}
+              </div>
+              <div>Time: {item && capitalize(moment(item?.updatedAt).fromNow())}</div>
+            </Form.Item>
+          )}
+
+          <Form.Item label="Comment" name="comment">
+            <Input.TextArea placeholder="Leave a Comment" />
           </Form.Item>
           
           <Form.Item>
