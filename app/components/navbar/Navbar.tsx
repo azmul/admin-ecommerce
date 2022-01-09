@@ -26,11 +26,14 @@ export default function Navbar() {
           <Menu.Item key="/"  icon={<HomeOutlined />}>
             <Link key="88" passHref={true} href="/"><b>{t("navbar:home")}</b></Link>
           </Menu.Item>
-          <Menu.Item key="/patient"  icon={<UserOutlined />}>
-            <Link key="99" passHref={true} href="/patient"><b>{t("navbar:orders")}</b></Link>
+          <Menu.Item key="/orders"  icon={<UserOutlined />}>
+            <Link key="99" passHref={true} href="/orders"><b>{t("navbar:orders")}</b></Link>
           </Menu.Item>
           <Menu.Item key="products" icon={<TableOutlined />}>
             <a onClick={()=>router.push('/products')}><b>{t("navbar:products")}</b></a>
+          </Menu.Item>
+          <Menu.Item key="messages" icon={<TableOutlined />}>
+            <a onClick={()=>router.push('/messages')}><b>Messages</b></a>
           </Menu.Item>
           <SubMenu key="settings" icon={<PicLeftOutlined />} title={<b>{t("navbar:settings")}</b>}>
             <Menu.Item key="category">

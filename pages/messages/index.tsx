@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useRouter } from 'next/router';
-import OrderList from "../../app/components/order/List";
 
 export default function PasswordPage() {
   const router = useRouter();
@@ -16,6 +15,6 @@ export default function PasswordPage() {
     /** End Page Access Check */
     
     return(
-        <><OrderList /></>
+        <>Messages Page</>
     )
 }
