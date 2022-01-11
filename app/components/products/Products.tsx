@@ -38,8 +38,8 @@ export default function Link() {
   const [item, setItem] = useState<any>(undefined);
   const [params, setParams] = useState<any>(undefined);
   const [pagination, setpagination] = useState({});
-  const [imageData, setImageData] = useState<any>([]);
-  const [categories, setCategories] = useState<any>([]);
+  const [imageData, setImageData] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState<any>([]);
 
   const profile: any = useSelector(
@@ -67,6 +67,9 @@ export default function Link() {
       title: "Price",
       dataIndex: "price",
       key: "price",
+      // eslint-disable-next-line react/display-name
+      render: (_name: string, record: any) =>
+        <>{record?.price}৳</>
     },
     {
       title: "Short Description",
@@ -195,8 +198,8 @@ export default function Link() {
       offerEnd: null,
       offerEnd_local: null,
       new: true,
-      category: null,
-      tag: null,
+      category: [],
+      tag: [],
       shortDescription: null,
       shortDescription_local: null,
       fullDescription: null,
