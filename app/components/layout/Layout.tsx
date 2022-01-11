@@ -64,7 +64,7 @@ export default function LayoutComponent({ children }: Props) {
             collapsedWidth="0"
             className={styles.sidebar}
           >
-            <div className={styles.logo}>Ecommerce[Admin]</div>
+            <div className={styles.logo}>KUREGHOR[ADMIN]</div>
             <Navbar />
           </Sider>
          <Layout>
