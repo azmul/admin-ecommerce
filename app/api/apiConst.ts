@@ -79,7 +79,7 @@ export const APIPathSegment = Object.freeze({
 export const DEFAULT_RESULTS_PER_PAGE = 20;
 export const DEFAULT_ALL_RESULTS_PER_PAGE = 50;
 export const PER_PAGE_SIZE = 20;
-export const INIITIAL_LOAD_SIZE = 5;
+export const INIITIAL_LOAD_SIZE = 20;
 
 export const DEFAULT_API_PARAMS = {
   limit: DEFAULT_RESULTS_PER_PAGE,

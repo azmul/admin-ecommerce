@@ -93,6 +93,14 @@ export default function Link() {
       render: (_name: string, record: any) => moment(record?.createdAt).format('MMMM Do YYYY, h:mm:ss a')
     },
     {
+      title: "Registered User",
+      dataIndex: "userRegistered",
+      key: "userRegistered",
+      // eslint-disable-next-line react/display-name
+      render: (_name: string, record: any) =>
+        record?.userRegistered ? "Yes" : "No"
+    },
+    {
       title: "Action",
       key: "action",
       // eslint-disable-next-line react/display-name
@@ -226,6 +234,7 @@ export default function Link() {
         <Descriptions column={1} title="Customer Info">
           <Descriptions.Item label="Name">{item && item.userAddress.name}</Descriptions.Item>
           <Descriptions.Item label="Phone">{item && item.userAddress.phone}</Descriptions.Item>
+          <Descriptions.Item label="Registered User">{item && item.userRegistered ? "Yes" : "No"}</Descriptions.Item>
           <Descriptions.Item label="District">{item && item.userAddress.district}</Descriptions.Item>
           <Descriptions.Item label="Upazila">{item && item.userAddress.upazila}</Descriptions.Item>
           <Descriptions.Item label="Address">
