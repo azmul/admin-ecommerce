@@ -232,13 +232,15 @@ export default function Link() {
         </Button>
       }
     >
-       <Spin spinning={loading}>
+       
       <Drawer
         title={create ? "Create Testimonial" : "Update Testimonial"}
         placement="right"
         onClose={closeDrawer}
         visible={visible}
+        destroyOnClose={true}
       >
+        <Spin spinning={loading}>
         <Form layout="vertical" form={form} onFinish={onFinish}>
           <Form.Item
             label="Customer Name"
@@ -321,7 +323,9 @@ export default function Link() {
             </Space>
           </Form.Item>
         </Form>
+        </Spin>
       </Drawer>
+      <Spin spinning={loading}>
         <Table
           onChange={getItems}
           pagination={pagination}

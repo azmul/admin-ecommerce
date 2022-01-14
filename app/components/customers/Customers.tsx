@@ -136,14 +136,16 @@ export default function Link() {
 
   return (
     <Card title="Customer List">
-       <Spin spinning={loading}>
+      
       <Drawer
         title="Customer Details"
         placement="right"
         onClose={closeDrawer}
         visible={visible}
         width={650}
+        destroyOnClose={true}
       >
+         <Spin spinning={loading}>
         <Descriptions column={1} title="Customer Info">
           <Descriptions.Item label="ID">{item && item.id}</Descriptions.Item>
           <Descriptions.Item label="Name">
@@ -266,6 +268,7 @@ export default function Link() {
         ) : (
           <div>No Order</div>
         )}
+        </Spin>
       </Drawer>
       <Form
         className={styles.searchForm}
@@ -289,7 +292,7 @@ export default function Link() {
           </Button>
         </Form.Item>
       </Form>
-     
+      <Spin spinning={loading}>
         <Table
           onChange={getItems}
           pagination={pagination}

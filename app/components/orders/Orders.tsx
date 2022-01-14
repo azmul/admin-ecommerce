@@ -207,6 +207,8 @@ export default function Link() {
         visible={visible}
         width={550}
       >
+              <Spin spinning={loading}>
+
         <Descriptions column={2} title="Price Info">
           <Descriptions.Item label="Total Price">{item && item.cartTotalPrice}৳</Descriptions.Item>
           <Descriptions.Item label="Payment Method">
@@ -316,6 +318,7 @@ export default function Link() {
             </Space>
           </Form.Item>
         </Form>
+        </Spin>
       </Drawer>
       <Form
         className={styles.searchForm}

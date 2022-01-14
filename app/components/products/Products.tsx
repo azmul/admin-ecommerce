@@ -291,7 +291,6 @@ export default function Link() {
         </Button>
       }
     >
-      <Spin spinning={loading}>
       <Drawer
         title={create ? "Create Product" : "Update Product"}
         placement="right"
@@ -299,6 +298,8 @@ export default function Link() {
         visible={visible}
         width={550}
       >
+              <Spin spinning={loading}>
+
         <Form layout="vertical" form={form} onFinish={onFinish}>
           <Form.Item
             label="Sku"
@@ -499,6 +500,7 @@ export default function Link() {
             </Space>
           </Form.Item>
         </Form>
+        </Spin>
       </Drawer>
       <Form className={styles.searchForm} form={formSearch} name="horizontal_login" layout="inline" onFinish={onSearch}>
           <Form.Item
@@ -516,7 +518,8 @@ export default function Link() {
             </Button>
           </Form.Item>
         </Form>
-      
+        <Spin spinning={loading}>
+
         <Table
           onChange={getItems}
           pagination={pagination}

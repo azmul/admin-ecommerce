@@ -226,13 +226,14 @@ export default function Link() {
         </Button>
       }
     >
-       <Spin spinning={loading}>
       <Drawer
         title={create ? "Create Slider" : "Update Slider"}
         placement="right"
         onClose={closeDrawer}
         visible={visible}
       >
+               <Spin spinning={loading}>
+
         <Form layout="vertical" form={form} onFinish={onFinish}>
           <Form.Item
             label="Title"
@@ -316,8 +317,10 @@ export default function Link() {
             </Space>
           </Form.Item>
         </Form>
+        </Spin>
       </Drawer>
-     
+      <Spin spinning={loading}>
+
         <Table
           onChange={getItems}
           pagination={pagination}
