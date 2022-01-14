@@ -29,7 +29,7 @@ export default function Link() {
   const [items, setItems] = useState([]);
   const [item, setItem] = useState<any>(undefined);
   const [params, setParams] = useState<any>(undefined);
-  const [pagination, setpagination] = useState({});
+  const [pagination, setpagination] = useState(undefined);
   const [imageData, setImageData] = useState<any>([]);
 
   const profile: any = useSelector(

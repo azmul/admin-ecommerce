@@ -31,7 +31,7 @@ export default function Link() {
   const [items, setItems] = useState([]);
   const [item, setItem] = useState<any>(undefined);
   const [params, setParams] = useState<any>(undefined);
-  const [pagination, setpagination] = useState({});
+  const [pagination, setpagination] = useState(undefined);
 
   const columns: any = [
     {
@@ -63,12 +63,6 @@ export default function Link() {
       title: "Upazila",
       dataIndex: "upazila",
       key: "upazila",
-    },
-    {
-      title: "Total Orders",
-      dataIndex: "orders",
-      key: "orders",
-      render: (_name: string, record: any) => record?.orders?.length,
     },
     {
       title: "Registered Time",

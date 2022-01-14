@@ -4,7 +4,7 @@ import { ApiResponse } from "../../api/models";
 import {ItemType} from "./ProductsType";
 
 export const getItems = async (params?: any): Promise<ApiResponse<any>> => {
-  const url = Endpoints.PRODUCTS;
+  const url = `${Endpoints.PRODUCTS}/admin`;
   
   const resp = await api.get<ApiResponse<any>>(url, {
     params: {

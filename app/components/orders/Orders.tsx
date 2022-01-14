@@ -11,7 +11,7 @@ import {
   Space,
   Select,
   Descriptions,
-  Divider
+  Divider,
 } from "antd";
 import * as ProductsApi from "./OrdersApi";
 import useTranslation from "next-translate/useTranslation";
@@ -342,7 +342,7 @@ export default function Link() {
       <Spin spinning={loading}>
         <Table
           onChange={getItems}
-          pagination={pagination}
+          pagination={pagination && pagination}
           loading={loading}
           columns={columns}
           dataSource={items}
