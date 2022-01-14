@@ -136,6 +136,7 @@ export default function Link() {
 
   return (
     <Card title="Customer List">
+       <Spin spinning={loading}>
       <Drawer
         title="Customer Details"
         placement="right"
@@ -288,7 +289,7 @@ export default function Link() {
           </Button>
         </Form.Item>
       </Form>
-      <Spin spinning={loading}>
+     
         <Table
           onChange={getItems}
           pagination={pagination}
