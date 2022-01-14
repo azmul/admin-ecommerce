@@ -1,0 +1,36 @@
+.marginRight10 {
+  margin-right: 8px;
+}
+
+.searchForm {
+  margin-bottom: 20px;
+  :global(.ant-form-item) {
+    margin-bottom: 0px;
+  }
+}
+
+.orders {
+  margin-bottom: 30px;
+  :global(.ant-card-head) {
+    background-color: #efefef;
+  }
+  :global(.ant-card-body) {
+    padding: 0;
+  }
+  :global(.ant-divider-vertical) {
+    height: auto;
+    margin: 0;
+  }
+}
+
+.delivery {
+    background-color: #f7f7f7;
+    padding: 12px;
+  }
+  .product {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid rgba(195, 195, 195, 0.1);
+    background-color: #fafafa;
+    text-align: center;
+  }

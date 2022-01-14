@@ -11,6 +11,7 @@ import {
   Space,
   Popconfirm,
   Radio,
+  Pagination,
 } from "antd";
 import * as CategoryApi from "./CategoryApi";
 import useTranslation from "next-translate/useTranslation";
@@ -55,6 +56,13 @@ export default function Link() {
       // eslint-disable-next-line react/display-name
       render: (_name: string, record: any) =>
         record?.is_active ? "Yes" : "No",
+    },
+    {
+      title: "Created Time",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (_name: string, record: any) =>
+        moment(record?.createdAt).format("MMMM Do YYYY, h:mm:ss a"),
     },
     {
       title: "Action",

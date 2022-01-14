@@ -56,6 +56,13 @@ export default function Link() {
         record?.is_active ? "Yes" : "No",
     },
     {
+      title: "Created Time",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (_name: string, record: any) =>
+        moment(record?.createdAt).format("MMMM Do YYYY, h:mm:ss a"),
+    },
+    {
       title: "Action",
       key: "action",
       // eslint-disable-next-line react/display-name

@@ -32,6 +32,9 @@ export default function Navbar() {
           <Menu.Item key="products" icon={<TableOutlined />}>
             <a onClick={()=>router.push('/products')}><b>{t("navbar:products")}</b></a>
           </Menu.Item>
+          <Menu.Item key="customers" icon={<TableOutlined />}>
+            <a onClick={()=>router.push('/customers')}><b>Customers</b></a>
+          </Menu.Item>
           <Menu.Item key="messages" icon={<TableOutlined />}>
             <a onClick={()=>router.push('/messages')}><b>Messages</b></a>
           </Menu.Item>

@@ -14,12 +14,10 @@ export const getItems = async (params?: any): Promise<ApiResponse<any>> => {
   return resp.data;
 };
 
-export const getItem = async (id: string, isNumeric: boolean): Promise<ApiResponse<any>> => {
+export const getItem = async (id: string): Promise<ApiResponse<any>> => {
   const url = `${Endpoints.ORDERS}/${id}`;
   
-  const resp = await api.get<ApiResponse<any>>(url, {
-    params: {isNumeric}
-  });
+  const resp = await api.get<ApiResponse<any>>(url);
   return resp.data;
 };
 

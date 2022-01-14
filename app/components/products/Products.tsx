@@ -85,6 +85,13 @@ export default function Link() {
         record?.is_active ? "Yes" : "No",
     },
     {
+      title: "Created Time",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (_name: string, record: any) =>
+        moment(record?.createdAt).format("MMMM Do YYYY, h:mm:ss a"),
+    },
+    {
       title: "Action",
       key: "action",
       // eslint-disable-next-line react/display-name
@@ -137,13 +144,13 @@ export default function Link() {
     }
   };
 
-  const handleEdit = async (id: any, isNumeric?: any) => {
+  const handleEdit = async (id: any) => {
     setCreate(false);
     setVisible(true);
     setImageData([]);
     try {
       setloading(true);
-      const item: any = await ProductsApi.getItem(id, isNumeric);
+      const item: any = await ProductsApi.getItem(id);
       form.setFieldsValue({
         sku: item.sku,
         name: item.name,
@@ -179,7 +186,7 @@ export default function Link() {
 
   const onSearch = (values: any) => {
     if(values?.id) {
-        handleEdit(values?.id, true)
+        handleEdit(values?.id)
       }
     }
 

@@ -59,6 +59,13 @@ export default function Link() {
       key: "subtitle_local",
     },
     {
+      title: "Created Time",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (_name: string, record: any) =>
+        moment(record?.createdAt).format("MMMM Do YYYY, h:mm:ss a"),
+    },
+    {
       title: "Active",
       dataIndex: "is_active",
       key: "is_active",

@@ -13,6 +13,7 @@ const PRODUCTS = API + "/products";
 const PATIENT = API + "/patient";
 const MESSAGES = API + "/messages";
 const ORDERS = API + "/orders";
+const CUSTOMERS = API + "/users";
 
 /**
  * Enum with all api endpoints
@@ -30,6 +31,7 @@ export const Endpoints = Object.freeze({
   PATIENT: PATIENT,
   MESSAGES: MESSAGES,
   ORDERS: ORDERS,
+  CUSTOMERS: CUSTOMERS,
   PATIENT_ADMIN: PATIENT + "/admin",
   ADMIN_PHONE_VERIFY: ADMIN + "/verify",
   ADMIN_REGISTER: ADMIN + "/register",

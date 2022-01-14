@@ -11,7 +11,7 @@ import {
   Space,
   Select,
   Descriptions,
-  Divider,
+  Divider
 } from "antd";
 import * as ProductsApi from "./OrdersApi";
 import useTranslation from "next-translate/useTranslation";
@@ -22,7 +22,6 @@ import moment from "moment";
 import { capitalize } from "lodash";
 import styles from "./Styles.module.scss";
 import { UserOutlined } from "@ant-design/icons";
-import Image from "next/image";
 
 const { Option } = Select;
 
@@ -36,7 +35,7 @@ export default function Link() {
   const [items, setItems] = useState([]);
   const [item, setItem] = useState<any>(undefined);
   const [params, setParams] = useState<any>(undefined);
-  const [pagination, setpagination] = useState({});
+  const [pagination, setpagination] = useState(undefined);
 
   const profile: any = useSelector(
     (state: RootState) => state.authModel.profile
@@ -87,7 +86,7 @@ export default function Link() {
       </>
     },
     {
-      title: "Created At",
+      title: "Created Time",
       dataIndex: "createdAt",
       key: "createdAt",
       render: (_name: string, record: any) => moment(record?.createdAt).format('MMMM Do YYYY, h:mm:ss a')
@@ -122,10 +121,10 @@ export default function Link() {
     try {
       setloading(true);
       values.last_updated_by = profile?.name;
+      values.customer_phone = item?.userAddress?.phone;
+      values.order_id = item?.id;
 
-      create
-        ? await ProductsApi.createItem(values)
-        : await ProductsApi.updateItem(item?._id, values);
+      await ProductsApi.updateItem(item?._id, values);
 
       message.success({
         content: `${create ? "Created" : "Updated"} Sucessfully`,
@@ -146,12 +145,12 @@ export default function Link() {
     }
   };
 
-  const handleEdit = async (id: any, isNumeric?: any) => {
+  const handleEdit = async (id: any) => {
     setCreate(false);
     setVisible(true);
     try {
       setloading(true);
-      const item: any = await ProductsApi.getItem(id, isNumeric);
+      const item: any = await ProductsApi.getItem(id);
       form.setFieldsValue({
         shippingStatus: item.shippingStatus,
         comment: item.comment,
@@ -169,7 +168,7 @@ export default function Link() {
 
   const onSearch = (values: any) => {
     if (values?.id) {
-      handleEdit(values?.id, true);
+      handleEdit(values?.id);
     }
   };
 
