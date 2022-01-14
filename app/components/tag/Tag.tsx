@@ -114,6 +114,7 @@ export default function Link() {
         name: item.name,
         name_local: item.name_local,
         is_active: item.is_active,
+        comment: item.comment,
       });
       setItem(item);
     } catch (error: any) {
@@ -130,6 +131,7 @@ export default function Link() {
       name: null,
       name_local: null,
       is_active: true,
+      comment: null,
     });
   };
 

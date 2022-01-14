@@ -19,6 +19,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import moment from "moment";
 import { capitalize } from "lodash";
+import comment from "antd/lib/comment";
 
 export default function Link() {
   const [visible, setVisible] = useState(false);
@@ -143,6 +144,7 @@ export default function Link() {
         content_local: item.content_local,
         customer_name: item.customer_name,
         is_active: item.is_active,
+        comment: item.comment,
       });
 
       if(item.image) {
@@ -174,6 +176,7 @@ export default function Link() {
       content_local: null,
       customer_name: null,
       is_active: true,
+      comment: null,
     });
   };
 

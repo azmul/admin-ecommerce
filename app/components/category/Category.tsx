@@ -115,6 +115,7 @@ export default function Link() {
       form.setFieldsValue({
         name: item.name,
         name_local: item.name_local,
+        comment: item.comment,
         is_active: item.is_active,
       });
       setItem(item);
@@ -132,6 +133,7 @@ export default function Link() {
       name: null,
       name_local: null,
       is_active: true,
+      comment: null,
     });
   };
 

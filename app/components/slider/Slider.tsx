@@ -137,6 +137,7 @@ export default function Link() {
         image: item.image,
         url: item.url,
         is_active: item.is_active,
+        comment: item.comment,
       });
 
       if(item.image) {
@@ -169,6 +170,7 @@ export default function Link() {
       image: null,
       url: null,
       is_active: true,
+      comment: null,
     });
   };
 

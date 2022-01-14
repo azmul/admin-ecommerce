@@ -79,7 +79,7 @@ export default function Link() {
         <Space size="middle">
           <Button onClick={() => handleEdit(record?._id)} type="primary">
             {" "}
-            Edit
+            Show Details
           </Button>
         </Space>
       ),
