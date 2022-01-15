@@ -9,7 +9,9 @@ import {
   Drawer,
   Table,
   Space,
-  Popconfirm,
+  Row,
+  Col,
+  DatePicker,
   Radio,
 } from "antd";
 import * as MessagesApi from "./MessagesApi";
@@ -18,7 +20,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import moment from "moment";
 import { capitalize } from "lodash";
+import { DateFormats } from "../../date/dateConst";
 
+const { RangePicker } = DatePicker;
 
 export default function Link() {
   const [visible, setVisible] = useState(false);
@@ -30,6 +34,8 @@ export default function Link() {
   const [item, setItem] = useState<any>(undefined);
   const [params, setParams] = useState<any>(undefined);
   const [pagination, setpagination] = useState(undefined);
+  const [slectedDate, setSelectedDate] = useState<any>(undefined);
+
   const profile: any = useSelector(
     (state: RootState) => state.authModel.profile
   );
@@ -61,15 +67,15 @@ export default function Link() {
       title: "Created At",
       dataIndex: "createdAt",
       key: "createdAt",
-      render: (_name: string, record: any) => moment(record?.createdAt).format('MMMM Do YYYY, h:mm:ss a')
+      render: (_name: string, record: any) =>
+        moment(record?.createdAt).format("MMMM Do YYYY, h:mm:ss a"),
     },
     {
       title: "Done",
       dataIndex: "is_done",
       key: "is_done",
       // eslint-disable-next-line react/display-name
-      render: (_name: string, record: any) =>
-        record?.is_done ? "Yes" : "No",
+      render: (_name: string, record: any) => (record?.is_done ? "Yes" : "No"),
     },
     {
       title: "Action",
@@ -77,7 +83,10 @@ export default function Link() {
       // eslint-disable-next-line react/display-name
       render: (record: any) => (
         <Space size="middle">
-          <Button onClick={() => handleEdit(record?._id)} type={!record?.is_done ? "primary" : "ghost"}>
+          <Button
+            onClick={() => handleEdit(record?._id)}
+            type={!record?.is_done ? "primary" : "ghost"}
+          >
             {" "}
             Edit
           </Button>
@@ -85,6 +94,10 @@ export default function Link() {
       ),
     },
   ];
+
+  const onDateChange = (dates: any) => {
+    setSelectedDate(dates);
+  };
 
   const onFinish = async (values: any) => {
     try {
@@ -124,7 +137,7 @@ export default function Link() {
         phone: item.phone,
         subject: item.subject,
         message: item.message,
-        created_at: moment(item.createdAt).format('MMMM Do YYYY, h:mm:ss a'),
+        created_at: moment(item.createdAt).format("MMMM Do YYYY, h:mm:ss a"),
         is_done: item.is_done,
         comment: item.comment,
       });
@@ -140,104 +153,124 @@ export default function Link() {
     setVisible(false);
   };
 
-  const getItems = useCallback(async (params?: any) => {
-    setParams(params);
-    if (params && params?.total) {
-      delete params.total;
-    }
+  const getItems = useCallback(
+    async (params?: any) => {
+      setParams(params);
+      const query: any = { ...params };
 
-    try {
-      setloading(true);
-      const response: any = await MessagesApi.getItems({ ...params });
-      setItems(response?.data);
-      setpagination(response?.pagination);
-    } catch (error: any) {
-      message.error(error?.message);
-    } finally {
-      setloading(false);
-    }
-  }, []);
+      if (slectedDate) {
+        query.startDate = moment(slectedDate[0]).format(DateFormats.API_DATE);
+        query.endDate = moment(slectedDate[1])
+          .add(1, "days")
+          .format(DateFormats.API_DATE);
+      }
+
+      if (query && query?.total) {
+        delete query.total;
+      }
+
+      try {
+        setloading(true);
+        const response: any = await MessagesApi.getItems({ ...query });
+        setItems(response?.data);
+        setpagination(response?.pagination);
+      } catch (error: any) {
+        message.error(error?.message);
+      } finally {
+        setloading(false);
+      }
+    },
+    [slectedDate]
+  );
 
   useEffect(() => {
     getItems();
   }, [getItems]);
 
   return (
-    <Card
-      title="Messages List"
-    >
+    <Card title="Messages List">
       <Drawer
         title={create ? "Create Tag" : "Update Tag"}
         placement="right"
         onClose={closeDrawer}
         visible={visible}
       >
-              <Spin spinning={loading}>
-
-        <Form layout="vertical" form={form} onFinish={onFinish}>
-          <Form.Item
-            label="Customer Name"
-            name="name"
-          >
-            <Input readOnly  />
-          </Form.Item>
-          <Form.Item
-            label="Customer Phone"
-            name="phone"
-          >
-            <Input readOnly/>
-          </Form.Item>
-          <Form.Item
-            label="Subject"
-            name="subject"
-          >
-            <Input readOnly/>
-          </Form.Item>
-          <Form.Item
-            label="Message"
-            name="message"
-          >
-            <Input.TextArea readOnly/>
-          </Form.Item>
-          <Form.Item
-            label="Created At"
-            name="created_at"
-          >
-            <Input readOnly/>
-          </Form.Item>
-          <Form.Item name="is_done">
-            <Radio.Group>
-              <Radio.Button value={true}>Done</Radio.Button>
-              <Radio.Button value={false}>Not Done</Radio.Button>
-            </Radio.Group>
-          </Form.Item>
-
-          {!create && (
-            <Form.Item label="Last Updated By">
-              <div>
-                Name:{" "}
-                {item && item?.last_updated_by ? item?.last_updated_by : "N/A"}
-              </div>
-              <div>Time: {item && capitalize(moment(item?.updatedAt).fromNow())}</div>
+        <Spin spinning={loading}>
+          <Form layout="vertical" form={form} onFinish={onFinish}>
+            <Form.Item label="Customer Name" name="name">
+              <Input readOnly />
             </Form.Item>
-          )}
+            <Form.Item label="Customer Phone" name="phone">
+              <Input readOnly />
+            </Form.Item>
+            <Form.Item label="Subject" name="subject">
+              <Input readOnly />
+            </Form.Item>
+            <Form.Item label="Message" name="message">
+              <Input.TextArea readOnly />
+            </Form.Item>
+            <Form.Item label="Created At" name="created_at">
+              <Input readOnly />
+            </Form.Item>
+            <Form.Item name="is_done">
+              <Radio.Group>
+                <Radio.Button value={true}>Done</Radio.Button>
+                <Radio.Button value={false}>Not Done</Radio.Button>
+              </Radio.Group>
+            </Form.Item>
 
-          <Form.Item label="Comment" name="comment">
-            <Input.TextArea placeholder="Leave a Comment" />
-          </Form.Item>
-          <Form.Item>
-            <Space size="middle">
-              <Button type="primary" htmlType="submit">
-                Update
-              </Button>
-              <Button onClick={closeDrawer}>Close</Button>
-            </Space>
-          </Form.Item>
-        </Form>
+            {!create && (
+              <Form.Item label="Last Updated By">
+                <div>
+                  Name:{" "}
+                  {item && item?.last_updated_by
+                    ? item?.last_updated_by
+                    : "N/A"}
+                </div>
+                <div>
+                  Time: {item && capitalize(moment(item?.updatedAt).fromNow())}
+                </div>
+              </Form.Item>
+            )}
+
+            <Form.Item label="Comment" name="comment">
+              <Input.TextArea placeholder="Leave a Comment" />
+            </Form.Item>
+            <Form.Item>
+              <Space size="middle">
+                <Button type="primary" htmlType="submit">
+                  Update
+                </Button>
+                <Button onClick={closeDrawer}>Close</Button>
+              </Space>
+            </Form.Item>
+          </Form>
         </Spin>
       </Drawer>
+      <Row justify="space-between">
+        <Col></Col>
+        <Col>
+          <RangePicker
+            ranges={{
+              Today: [moment(), moment()],
+              "This Month": [
+                moment().startOf("month"),
+                moment().endOf("month"),
+              ],
+            }}
+            onChange={onDateChange}
+          />
+          <Button
+            onClick={getItems}
+            loading={loading}
+            style={{ marginLeft: 10 }}
+            type="primary"
+          >
+            Refresh
+          </Button>
+        </Col>
+      </Row>
       <Spin spinning={loading}>
- 
         <Table
           onChange={getItems}
           pagination={pagination}

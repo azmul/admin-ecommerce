@@ -12,6 +12,9 @@ import {
   Select,
   Popconfirm,
   Radio,
+  DatePicker,
+  Row,
+  Col,
 } from "antd";
 import * as ProductsApi from "./ProductsApi";
 import useTranslation from "next-translate/useTranslation";
@@ -23,9 +26,11 @@ import { RootState } from "../../../redux/store";
 import moment from "moment";
 import { capitalize } from "lodash";
 import styles from "./Styles.module.scss";
-import { UserOutlined } from '@ant-design/icons';
+import { UserOutlined } from "@ant-design/icons";
+import { DateFormats } from "../../date/dateConst";
 
 const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 export default function Link() {
   const [visible, setVisible] = useState(false);
@@ -41,6 +46,7 @@ export default function Link() {
   const [imageData, setImageData] = useState([]);
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState<any>([]);
+  const [slectedDate, setSelectedDate] = useState<any>(undefined);
 
   const profile: any = useSelector(
     (state: RootState) => state.authModel.profile
@@ -68,8 +74,7 @@ export default function Link() {
       dataIndex: "price",
       key: "price",
       // eslint-disable-next-line react/display-name
-      render: (_name: string, record: any) =>
-        <>{record?.price}৳</>
+      render: (_name: string, record: any) => <>{record?.price}৳</>,
     },
     {
       title: "Short Description",
@@ -108,6 +113,10 @@ export default function Link() {
       ),
     },
   ];
+
+  const onDateChange = (dates: any) => {
+    setSelectedDate(dates);
+  };
 
   const onFinish = async (values: any) => {
     if (imageData && imageData.length > 0) {
@@ -185,10 +194,10 @@ export default function Link() {
   };
 
   const onSearch = (values: any) => {
-    if(values?.id) {
-        handleEdit(values?.id)
-      }
+    if (values?.id) {
+      handleEdit(values?.id);
     }
+  };
 
   const handleCreate = (value: boolean) => {
     setCreate(value);
@@ -234,23 +243,35 @@ export default function Link() {
     setVisible(false);
   };
 
-  const getItems = useCallback(async (params?: any) => {
-    setParams(params);
-    if (params && params?.total) {
-      delete params.total;
-    }
+  const getItems = useCallback(
+    async (params?: any) => {
+      setParams(params);
+      const query: any = { ...params };
 
-    try {
-      setloading(true);
-      const response: any = await ProductsApi.getItems({ ...params });
-      setItems(response?.data);
-      setpagination(response?.pagination);
-    } catch (error: any) {
-      message.error(error?.message);
-    } finally {
-      setloading(false);
-    }
-  }, []);
+      if (slectedDate) {
+        query.startDate = moment(slectedDate[0]).format(DateFormats.API_DATE);
+        query.endDate = moment(slectedDate[1])
+          .add(1, "days")
+          .format(DateFormats.API_DATE);
+      }
+
+      if (query && query?.total) {
+        delete query.total;
+      }
+
+      try {
+        setloading(true);
+        const response: any = await ProductsApi.getItems({ ...query });
+        setItems(response?.data);
+        setpagination(response?.pagination);
+      } catch (error: any) {
+        message.error(error?.message);
+      } finally {
+        setloading(false);
+      }
+    },
+    [slectedDate]
+  );
 
   const getImages = (data: any) => {
     setImageData(data);
@@ -298,228 +319,269 @@ export default function Link() {
         visible={visible}
         width={550}
       >
-              <Spin spinning={loading}>
-
-        <Form layout="vertical" form={form} onFinish={onFinish}>
-          <Form.Item
-            label="Sku"
-            name="sku"
-            rules={[{ required: true, message: "Please give sku" }]}
-          >
-            <Input placeholder="Sku" />
-          </Form.Item>
-          <Form.Item
-            label="Name"
-            name="name"
-            rules={[{ required: true, message: "Please give name" }]}
-          >
-            <Input placeholder="Name" />
-          </Form.Item>
-          <Form.Item
-            label="Name Local"
-            name="name_local"
-            rules={[{ required: true, message: "Please give name local" }]}
-          >
-            <Input placeholder="Name Local" />
-          </Form.Item>
-          <Form.Item
-            label="Price"
-            name="price"
-            rules={[{ required: true, message: "Please give price" }]}
-          >
-            <Input type="number" placeholder="price" />
-          </Form.Item>
-          <Form.Item
-            label="Price Local"
-            name="price_local"
-            rules={[{ required: true, message: "Please price local" }]}
-          >
-            <Input placeholder="price local" />
-          </Form.Item>
-          <Form.Item
-            label="Discount"
-            name="discount"
-            rules={[{ required: true, message: "Please give Discount" }]}
-          >
-            <Input type="number" placeholder="Discount" />
-          </Form.Item>
-          <Form.Item
-            label="Discount Local"
-            name="discount_local"
-            rules={[{ required: true, message: "Please give Discount local" }]}
-          >
-            <Input placeholder="Discount local" />
-          </Form.Item>
-          <Form.Item
-            label="Offer End"
-            name="offerEnd"
-            rules={[{ required: true, message: "Please give offerEnd" }]}
-          >
-            <Input placeholder="Offer End" />
-          </Form.Item>
-          <Form.Item
-            label="offerEnd Local"
-            name="offerEnd_local"
-            rules={[{ required: true, message: "Please give offerEnd local" }]}
-          >
-            <Input placeholder="Offer End local" />
-          </Form.Item>
-          
-          <Form.Item name="new">
-            <Radio.Group>
-              <Radio.Button value={true}>New</Radio.Button>
-              <Radio.Button value={false}>Not New</Radio.Button>
-            </Radio.Group>
-          </Form.Item>
-          <Form.Item label="Image" rules={[{ message: "Please give Image" }]}>
-            <ImageUploader
-              data={imageData}
-              maxImageNumber={6}
-              uploadPreset="products"
-              handleImages={getImages}
-            />
-          </Form.Item>
-          <Form.Item
-            label="Short Description"
-            name="shortDescription"
-            rules={[
-              { required: true, message: "Please give short Description" },
-            ]}
-          >
-            <Input.TextArea placeholder="shortDescription" />
-          </Form.Item>
-          <Form.Item
-            label="Short Description Local"
-            name="shortDescription_local"
-            rules={[
-              {
-                required: true,
-                message: "Please give short Description local",
-              },
-            ]}
-          >
-            <Input.TextArea placeholder="Short Description local" />
-          </Form.Item>
-          <Form.Item
-            label="Full Description"
-            name="fullDescription"
-            rules={[{ required: true, message: "Please give fullDescription" }]}
-          >
-            <Input.TextArea placeholder="full Description" />
-          </Form.Item>
-          <Form.Item
-            label="Full Description Local"
-            name="fullDescription_local"
-            rules={[
-              { required: true, message: "Please give fullDescription local" },
-            ]}
-          >
-            <Input.TextArea placeholder="Full Description local" />
-          </Form.Item>
-          <Form.Item
-            label="Category"
-            name="category"
-            rules={[{ required: true, message: "Please give Category" }]}
-          >
-            <Select
-              mode="multiple"
-              placeholder="Please select Category"
-              style={{ width: "100%" }}
+        <Spin spinning={loading}>
+          <Form layout="vertical" form={form} onFinish={onFinish}>
+            <Form.Item
+              label="Sku"
+              name="sku"
+              rules={[{ required: true, message: "Please give sku" }]}
             >
-              {categories &&
-                categories.length > 0 &&
-                categories.map((category: any) => (
-                  <Option key={category.name} value={category.name}>
-                    {category.name}
-                  </Option>
-                ))}
-            </Select>
-          </Form.Item>
-          <Form.Item
-            label="Tag"
-            name="tag"
-            rules={[{ required: true, message: "Please give Tag" }]}
-          >
-            <Select
-              mode="multiple"
-              placeholder="Please select Tag"
-              style={{ width: "100%" }}
-            >
-              {tags &&
-                tags.length > 0 &&
-                tags.map((tag: any) => (
-                  <Option key={tag.name} value={tag.name}>
-                    {tag.name}
-                  </Option>
-                ))}
-            </Select>
-          </Form.Item>
-          <Form.Item
-            label="Stock"
-            name="stock"
-            rules={[{ required: true, message: "Please give Stock" }]}
-          >
-            <Input type="number" placeholder="Stock" />
-          </Form.Item>
-          <Form.Item name="is_active">
-            <Radio.Group>
-              <Radio.Button value={true}>Active</Radio.Button>
-              <Radio.Button value={false}>Not Active</Radio.Button>
-            </Radio.Group>
-          </Form.Item>
-          
-          {!create && (
-            <Form.Item label="Last Updated By">
-              <div>
-                Name:{" "}
-                {item && item?.last_updated_by ? item?.last_updated_by : "N/A"}
-              </div>
-              <div>Time: {item && capitalize(moment(item?.updatedAt).fromNow())}</div>
+              <Input placeholder="Sku" />
             </Form.Item>
-          )}
+            <Form.Item
+              label="Name"
+              name="name"
+              rules={[{ required: true, message: "Please give name" }]}
+            >
+              <Input placeholder="Name" />
+            </Form.Item>
+            <Form.Item
+              label="Name Local"
+              name="name_local"
+              rules={[{ required: true, message: "Please give name local" }]}
+            >
+              <Input placeholder="Name Local" />
+            </Form.Item>
+            <Form.Item
+              label="Price"
+              name="price"
+              rules={[{ required: true, message: "Please give price" }]}
+            >
+              <Input type="number" placeholder="price" />
+            </Form.Item>
+            <Form.Item
+              label="Price Local"
+              name="price_local"
+              rules={[{ required: true, message: "Please price local" }]}
+            >
+              <Input placeholder="price local" />
+            </Form.Item>
+            <Form.Item
+              label="Discount"
+              name="discount"
+              rules={[{ required: true, message: "Please give Discount" }]}
+            >
+              <Input type="number" placeholder="Discount" />
+            </Form.Item>
+            <Form.Item
+              label="Discount Local"
+              name="discount_local"
+              rules={[
+                { required: true, message: "Please give Discount local" },
+              ]}
+            >
+              <Input placeholder="Discount local" />
+            </Form.Item>
+            <Form.Item
+              label="Offer End"
+              name="offerEnd"
+              rules={[{ required: true, message: "Please give offerEnd" }]}
+            >
+              <Input placeholder="Offer End" />
+            </Form.Item>
+            <Form.Item
+              label="offerEnd Local"
+              name="offerEnd_local"
+              rules={[
+                { required: true, message: "Please give offerEnd local" },
+              ]}
+            >
+              <Input placeholder="Offer End local" />
+            </Form.Item>
 
-          <Form.Item label="Comment" name="comment">
-            <Input.TextArea placeholder="Leave a Comment" />
-          </Form.Item>
+            <Form.Item name="new">
+              <Radio.Group>
+                <Radio.Button value={true}>New</Radio.Button>
+                <Radio.Button value={false}>Not New</Radio.Button>
+              </Radio.Group>
+            </Form.Item>
+            <Form.Item label="Image" rules={[{ message: "Please give Image" }]}>
+              <ImageUploader
+                data={imageData}
+                maxImageNumber={6}
+                uploadPreset="products"
+                handleImages={getImages}
+              />
+            </Form.Item>
+            <Form.Item
+              label="Short Description"
+              name="shortDescription"
+              rules={[
+                { required: true, message: "Please give short Description" },
+              ]}
+            >
+              <Input.TextArea placeholder="shortDescription" />
+            </Form.Item>
+            <Form.Item
+              label="Short Description Local"
+              name="shortDescription_local"
+              rules={[
+                {
+                  required: true,
+                  message: "Please give short Description local",
+                },
+              ]}
+            >
+              <Input.TextArea placeholder="Short Description local" />
+            </Form.Item>
+            <Form.Item
+              label="Full Description"
+              name="fullDescription"
+              rules={[
+                { required: true, message: "Please give fullDescription" },
+              ]}
+            >
+              <Input.TextArea placeholder="full Description" />
+            </Form.Item>
+            <Form.Item
+              label="Full Description Local"
+              name="fullDescription_local"
+              rules={[
+                {
+                  required: true,
+                  message: "Please give fullDescription local",
+                },
+              ]}
+            >
+              <Input.TextArea placeholder="Full Description local" />
+            </Form.Item>
+            <Form.Item
+              label="Category"
+              name="category"
+              rules={[{ required: true, message: "Please give Category" }]}
+            >
+              <Select
+                mode="multiple"
+                placeholder="Please select Category"
+                style={{ width: "100%" }}
+              >
+                {categories &&
+                  categories.length > 0 &&
+                  categories.map((category: any) => (
+                    <Option key={category.name} value={category.name}>
+                      {category.name}
+                    </Option>
+                  ))}
+              </Select>
+            </Form.Item>
+            <Form.Item
+              label="Tag"
+              name="tag"
+              rules={[{ required: true, message: "Please give Tag" }]}
+            >
+              <Select
+                mode="multiple"
+                placeholder="Please select Tag"
+                style={{ width: "100%" }}
+              >
+                {tags &&
+                  tags.length > 0 &&
+                  tags.map((tag: any) => (
+                    <Option key={tag.name} value={tag.name}>
+                      {tag.name}
+                    </Option>
+                  ))}
+              </Select>
+            </Form.Item>
+            <Form.Item
+              label="Stock"
+              name="stock"
+              rules={[{ required: true, message: "Please give Stock" }]}
+            >
+              <Input type="number" placeholder="Stock" />
+            </Form.Item>
+            <Form.Item name="is_active">
+              <Radio.Group>
+                <Radio.Button value={true}>Active</Radio.Button>
+                <Radio.Button value={false}>Not Active</Radio.Button>
+              </Radio.Group>
+            </Form.Item>
 
-          <Form.Item>
-            <Space size="middle">
-              <Button type="primary" htmlType="submit">
-                {create ? "Create" : "Update"}
-              </Button>
-              <Button onClick={closeDrawer}>Close</Button>
-              {!create && (
-                <Popconfirm
-                  title="Are you sure want to delete"
-                  onConfirm={confirm}
-                  onVisibleChange={() => console.log("visible change")}
-                >
-                  <Button danger> Delete </Button>{" "}
-                </Popconfirm>
-              )}
-            </Space>
-          </Form.Item>
-        </Form>
+            {!create && (
+              <Form.Item label="Last Updated By">
+                <div>
+                  Name:{" "}
+                  {item && item?.last_updated_by
+                    ? item?.last_updated_by
+                    : "N/A"}
+                </div>
+                <div>
+                  Time: {item && capitalize(moment(item?.updatedAt).fromNow())}
+                </div>
+              </Form.Item>
+            )}
+
+            <Form.Item label="Comment" name="comment">
+              <Input.TextArea placeholder="Leave a Comment" />
+            </Form.Item>
+
+            <Form.Item>
+              <Space size="middle">
+                <Button type="primary" htmlType="submit">
+                  {create ? "Create" : "Update"}
+                </Button>
+                <Button onClick={closeDrawer}>Close</Button>
+                {!create && (
+                  <Popconfirm
+                    title="Are you sure want to delete"
+                    onConfirm={confirm}
+                    onVisibleChange={() => console.log("visible change")}
+                  >
+                    <Button danger> Delete </Button>{" "}
+                  </Popconfirm>
+                )}
+              </Space>
+            </Form.Item>
+          </Form>
         </Spin>
       </Drawer>
-      <Form className={styles.searchForm} form={formSearch} name="horizontal_login" layout="inline" onFinish={onSearch}>
-          <Form.Item
-            name="id"
-            rules={[{ required: true, message: "Give Product Numeric ID"  }]}
+      <Row justify="space-between">
+        <Col>
+          <Form
+            className={styles.searchForm}
+            form={formSearch}
+            name="horizontal_login"
+            layout="inline"
+            onFinish={onSearch}
           >
-            <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder={"Id"} />
-          </Form.Item>
-          <Form.Item >
-            <Button
-              type="primary"
-              htmlType="submit"
+            <Form.Item
+              name="id"
+              rules={[{ required: true, message: "Give Product Numeric ID" }]}
             >
+              <Input
+                prefix={<UserOutlined className="site-form-item-icon" />}
+                placeholder={"Id"}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
                 {t("table:find")}
-            </Button>
-          </Form.Item>
-        </Form>
-        <Spin spinning={loading}>
-
+              </Button>
+            </Form.Item>
+          </Form>
+        </Col>
+        <Col>
+          <RangePicker
+            ranges={{
+              Today: [moment(), moment()],
+              "This Month": [
+                moment().startOf("month"),
+                moment().endOf("month"),
+              ],
+            }}
+            onChange={onDateChange}
+          />
+          <Button
+            onClick={getItems}
+            loading={loading}
+            style={{ marginLeft: 10 }}
+            type="primary"
+          >
+            Refresh
+          </Button>
+        </Col>
+      </Row>
+      <Spin spinning={loading}>
         <Table
           onChange={getItems}
           pagination={pagination}

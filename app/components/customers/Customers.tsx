@@ -13,15 +13,17 @@ import {
   Col,
   Descriptions,
   Divider,
+  DatePicker,
 } from "antd";
 import * as ProductsApi from "./CustomersApi";
 import useTranslation from "next-translate/useTranslation";
-import { PAYMENT, DELIVERY } from "../../api/commonConst";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
+import { DELIVERY } from "../../api/commonConst";
 import moment from "moment";
 import styles from "./Styles.module.scss";
 import { UserOutlined } from "@ant-design/icons";
+import { DateFormats } from "../../date/dateConst";
+
+const { RangePicker } = DatePicker;
 
 export default function Link() {
   const [visible, setVisible] = useState(false);
@@ -32,6 +34,7 @@ export default function Link() {
   const [item, setItem] = useState<any>(undefined);
   const [params, setParams] = useState<any>(undefined);
   const [pagination, setpagination] = useState(undefined);
+  const [slectedDate, setSelectedDate] = useState<any>(undefined);
 
   const columns: any = [
     {
@@ -86,6 +89,10 @@ export default function Link() {
     },
   ];
 
+  const onDateChange = (dates: any) => {
+    setSelectedDate(dates);
+  };
+
   const handleEdit = async (id: any) => {
     setVisible(true);
     try {
@@ -112,23 +119,35 @@ export default function Link() {
     setVisible(false);
   };
 
-  const getItems = useCallback(async (params?: any) => {
-    setParams(params);
-    if (params && params?.total) {
-      delete params.total;
-    }
+  const getItems = useCallback(
+    async (params?: any) => {
+      setParams(params);
+      const query: any = { ...params };
 
-    try {
-      setloading(true);
-      const response: any = await ProductsApi.getItems({ ...params });
-      setItems(response?.data);
-      setpagination(response?.pagination);
-    } catch (error: any) {
-      message.error(error?.message);
-    } finally {
-      setloading(false);
-    }
-  }, []);
+      if (slectedDate) {
+        query.startDate = moment(slectedDate[0]).format(DateFormats.API_DATE);
+        query.endDate = moment(slectedDate[1])
+          .add(1, "days")
+          .format(DateFormats.API_DATE);
+      }
+
+      if (query && query?.total) {
+        delete query.total;
+      }
+
+      try {
+        setloading(true);
+        const response: any = await ProductsApi.getItems({ ...query });
+        setItems(response?.data);
+        setpagination(response?.pagination);
+      } catch (error: any) {
+        message.error(error?.message);
+      } finally {
+        setloading(false);
+      }
+    },
+    [slectedDate]
+  );
 
   useEffect(() => {
     getItems();
@@ -136,7 +155,6 @@ export default function Link() {
 
   return (
     <Card title="Customer List">
-      
       <Drawer
         title="Customer Details"
         placement="right"
@@ -145,47 +163,47 @@ export default function Link() {
         width={650}
         destroyOnClose={true}
       >
-         <Spin spinning={loading}>
-        <Descriptions column={1} title="Customer Info">
-          <Descriptions.Item label="ID">{item && item.id}</Descriptions.Item>
-          <Descriptions.Item label="Name">
-            {item && item.name}
-          </Descriptions.Item>
-          <Descriptions.Item label="Phone">
-            {item && item.phone}
-          </Descriptions.Item>
-          <Descriptions.Item label="Gender">
-            {item && item.gender}
-          </Descriptions.Item>
-          <Descriptions.Item label="Email">
-            {item && item.email}
-          </Descriptions.Item>
-          <Descriptions.Item label="District">
-            {item && item.district}
-          </Descriptions.Item>
-          <Descriptions.Item label="Upazila">
-            {item && item.upazila}
-          </Descriptions.Item>
-          <Descriptions.Item label="Post Code">
-            {item && item.post_code}
-          </Descriptions.Item>
-          <Descriptions.Item label="Address">
-            {item && item.address}
-          </Descriptions.Item>
-          <Descriptions.Item label="Registered Time">
-            {moment(item?.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
-          </Descriptions.Item>
-          <Descriptions.Item label="Last Profile Update Time">
-            {moment(item?.updatedAt).format("MMMM Do YYYY, h:mm:ss a")}
-          </Descriptions.Item>
-        </Descriptions>
+        <Spin spinning={loading}>
+          <Descriptions column={1} title="Customer Info">
+            <Descriptions.Item label="ID">{item && item.id}</Descriptions.Item>
+            <Descriptions.Item label="Name">
+              {item && item.name}
+            </Descriptions.Item>
+            <Descriptions.Item label="Phone">
+              {item && item.phone}
+            </Descriptions.Item>
+            <Descriptions.Item label="Gender">
+              {item && item.gender}
+            </Descriptions.Item>
+            <Descriptions.Item label="Email">
+              {item && item.email}
+            </Descriptions.Item>
+            <Descriptions.Item label="District">
+              {item && item.district}
+            </Descriptions.Item>
+            <Descriptions.Item label="Upazila">
+              {item && item.upazila}
+            </Descriptions.Item>
+            <Descriptions.Item label="Post Code">
+              {item && item.post_code}
+            </Descriptions.Item>
+            <Descriptions.Item label="Address">
+              {item && item.address}
+            </Descriptions.Item>
+            <Descriptions.Item label="Registered Time">
+              {moment(item?.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
+            </Descriptions.Item>
+            <Descriptions.Item label="Last Profile Update Time">
+              {moment(item?.updatedAt).format("MMMM Do YYYY, h:mm:ss a")}
+            </Descriptions.Item>
+          </Descriptions>
 
-        <Divider />
+          <Divider />
 
-        {item?.orders.length > 0 ? (
-          <>
-            {item?.orders.reverse().map((order: any) => (
-              <div key={order.id} className={styles.orders}>
+          {item?.orders.length > 0 ? (
+            <>
+              {item?.orders.reverse().map((order: any) => (
+                <div key={order.id} className={styles.orders}>
                   <Card
                     title={`Order ID: #${order.id}`}
                     extra={
@@ -229,7 +247,7 @@ export default function Link() {
                       </Row>
                     </div>
                     {order.products &&
-                      order.products.map((product:any) => (
+                      order.products.map((product: any) => (
                         <div key={product.id} className={styles.product}>
                           <Row justify="center">
                             <Col sm={2} xs={12}>
@@ -262,36 +280,60 @@ export default function Link() {
                         </div>
                       ))}
                   </Card>
-              </div>
-            ))}{" "}
-          </>
-        ) : (
-          <div>No Order</div>
-        )}
+                </div>
+              ))}{" "}
+            </>
+          ) : (
+            <div>No Order</div>
+          )}
         </Spin>
       </Drawer>
-      <Form
-        className={styles.searchForm}
-        form={formSearch}
-        name="horizontal_login"
-        layout="inline"
-        onFinish={onSearch}
-      >
-        <Form.Item
-          name="id"
-          rules={[{ required: true, message: "Give Product Numeric ID" }]}
-        >
-          <Input
-            prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder={"Id"}
+      <Row justify="space-between">
+        <Col>
+          <Form
+            className={styles.searchForm}
+            form={formSearch}
+            name="horizontal_login"
+            layout="inline"
+            onFinish={onSearch}
+          >
+            <Form.Item
+              name="id"
+              rules={[{ required: true, message: "Give Product Numeric ID" }]}
+            >
+              <Input
+                prefix={<UserOutlined className="site-form-item-icon" />}
+                placeholder={"Id"}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                {t("table:find")}
+              </Button>
+            </Form.Item>
+          </Form>
+        </Col>
+        <Col>
+          <RangePicker
+            ranges={{
+              Today: [moment(), moment()],
+              "This Month": [
+                moment().startOf("month"),
+                moment().endOf("month"),
+              ],
+            }}
+            onChange={onDateChange}
           />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            {t("table:find")}
+          <Button
+            onClick={getItems}
+            loading={loading}
+            style={{ marginLeft: 10 }}
+            type="primary"
+          >
+            Refresh
           </Button>
-        </Form.Item>
-      </Form>
+        </Col>
+      </Row>
       <Spin spinning={loading}>
         <Table
           onChange={getItems}
