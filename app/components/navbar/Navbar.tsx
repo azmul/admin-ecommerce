@@ -51,6 +51,9 @@ export default function Navbar() {
             <Menu.Item key="testimonial">
                <a onClick={()=>router.push('/testimonial')}><b>{t("navbar:testimonial")}</b></a>
             </Menu.Item>
+            <Menu.Item key="common_setting">
+               <a onClick={()=>router.push('/setting')}><b>Common Setting</b></a>
+            </Menu.Item>
           </SubMenu>
           <Menu.Item key="/password">
           <ToolOutlined /> <Link key="5" passHref={true} href="/password"><b>{t("navbar:changePassword")}</b></Link>

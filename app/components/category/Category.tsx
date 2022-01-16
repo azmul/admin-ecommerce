@@ -212,7 +212,7 @@ export default function Link() {
           <Form.Item name="is_active">
             <Radio.Group>
               <Radio.Button value={true}>Active</Radio.Button>
-              <Radio.Button value={false}>Not Active</Radio.Button>
+              <Radio.Button value={false}>InActive</Radio.Button>
             </Radio.Group>
           </Form.Item>
 
