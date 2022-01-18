@@ -30,7 +30,7 @@ const Login = () => {
 
 
           message.success({
-            content: t("form:loginSucessMessage"),
+            content: "Sucessfully Login",
             style: {
               marginTop: '10vh',
             },

@@ -15,6 +15,10 @@ import {
   DatePicker,
   Row,
   Col,
+  Tooltip,
+  Comment,
+  List,
+  Avatar
 } from "antd";
 import * as BlogApi from "./BlogApi";
 import useTranslation from "next-translate/useTranslation";
@@ -23,7 +27,7 @@ import * as CategoryApi from "../category/CategoryApi";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import moment from "moment";
-import { capitalize } from "lodash";
+import { capitalize, remove } from "lodash";
 import styles from "./Styles.module.scss";
 import { UserOutlined } from "@ant-design/icons";
 import { DateFormats } from "../../date/dateConst";
@@ -35,6 +39,7 @@ export default function Link() {
   const [visible, setVisible] = useState(false);
   const [create, setCreate] = useState(false);
   const [loading, setloading] = useState(false);
+  const [loadingComment, setLoadingComment] = useState(false);
   const [form] = Form.useForm();
   const [formSearch] = Form.useForm();
   const { t } = useTranslation("ns1");
@@ -45,6 +50,9 @@ export default function Link() {
   const [imageData, setImageData] = useState<any>([]);
   const [categories, setCategories] = useState([]);
   const [slectedDate, setSelectedDate] = useState<any>(undefined);
+  const [commentVisible, setCommentVisible] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [itemComments, setItemComments] = useState([]);
 
   const profile: any = useSelector(
     (state: RootState) => state.authModel.profile
@@ -65,7 +73,11 @@ export default function Link() {
       key: "creator_name",
       // eslint-disable-next-line react/display-name
       render: (_name: string, record: any) =>
-        record?.is_active ? record?.creator_name : <del>{record?.creator_name}</del>,
+        record?.is_active ? (
+          record?.creator_name
+        ) : (
+          <del>{record?.creator_name}</del>
+        ),
     },
     {
       title: "Title",
@@ -120,7 +132,6 @@ export default function Link() {
     } else {
       values.picture_url = undefined;
     }
-    console.log(values);
     try {
       setloading(true);
       values.last_updated_by = profile?.name;
@@ -168,11 +179,14 @@ export default function Link() {
       });
 
       setItem(item);
-      setImageData([{
-        url: item.picture_url,
-        uid: item.uid,
-        name: item.title,
-      }]);
+      setItemComments(item?.comments);
+      setImageData([
+        {
+          url: item.picture_url,
+          uid: item.uid,
+          name: item.title,
+        },
+      ]);
     } catch (error: any) {
       setVisible(false);
       message.error(error?.message);
@@ -220,6 +234,69 @@ export default function Link() {
 
   const closeDrawer = () => {
     setVisible(false);
+  };
+
+  const closeCommentDrawer = () => {
+    setCommentVisible(false);
+  };
+
+  const createCommentList = (comments: any) => {
+    const data = comments.map((comment: any) => ({
+      actions: [
+        <Popconfirm
+          key={Math.random()}
+          title="Are you sure to delete this comment?"
+          onConfirm={() => deleteComment(comment)}
+          okText="Yes"
+          cancelText="No"
+        >
+          <a href="#">Delete</a>
+        </Popconfirm>,
+      ],
+      author: `${comment.customerName} (${comment.customerPhone})`,
+      avatar: (
+        <>
+          {" "}
+          <Avatar icon={<UserOutlined />} />
+        </>
+      ),
+      content: <p>{comment.comment}</p>,
+      datetime: (
+        <Tooltip
+          title={moment(comment.createdAt).format("YYYY-MM-DD HH:mm:ss")}
+        >
+          <span>{moment(comment.createdAt).fromNow()}</span>
+        </Tooltip>
+      ),
+    }));
+    setComments(data);
+  };
+
+  const deleteComment = async (comment: any) => {
+    try {
+      setItemComments([]);
+      setLoadingComment(true);
+      await BlogApi.updateCommentItem(item._id, {
+        blogId: item.id,
+        isDeleted: true,
+      });
+      remove(
+        itemComments,
+        (item: any) => Number(item.id) === Number(comment.id)
+      );
+      setItemComments(itemComments);
+      createCommentList(itemComments);
+      message.success("Comment deleted successfully");
+    } finally {
+      setLoadingComment(false);
+    }
+  };
+
+  const openCommentDrawer = () => {
+    if (item?.comments && item.comments.length > 0) {
+      createCommentList(item.comments);
+    }
+    setCommentVisible(true);
   };
 
   const getItems = useCallback(
@@ -296,10 +373,7 @@ export default function Link() {
             >
               <Input />
             </Form.Item>
-            <Form.Item
-              label="Title Local"
-              name="title_local"
-            >
+            <Form.Item label="Title Local" name="title_local">
               <Input />
             </Form.Item>
             <Form.Item
@@ -309,10 +383,7 @@ export default function Link() {
             >
               <Input.TextArea />
             </Form.Item>
-            <Form.Item
-              label="Content Local"
-              name="content_local"
-            >
+            <Form.Item label="Content Local" name="content_local">
               <Input.TextArea />
             </Form.Item>
             <Form.Item
@@ -386,11 +457,13 @@ export default function Link() {
                   {create ? "Create" : "Update"}
                 </Button>
                 <Button onClick={closeDrawer}>Close</Button>
+                <Button type="primary" onClick={openCommentDrawer}>
+                  Comments
+                </Button>
                 {!create && (
                   <Popconfirm
                     title="Are you sure want to delete"
                     onConfirm={confirm}
-                    onVisibleChange={() => console.log("visible change")}
                   >
                     <Button danger> Delete </Button>{" "}
                   </Popconfirm>
@@ -400,6 +473,39 @@ export default function Link() {
           </Form>
         </Spin>
       </Drawer>
+
+      <Drawer
+        title="Comments List"
+        placement="right"
+        onClose={closeCommentDrawer}
+        visible={commentVisible}
+        width={500}
+      >
+        <Spin spinning={loadingComment}>
+          {comments && comments.length > 0 ? (
+            <List
+              className="comment-list"
+              header={`${comments.length} replies`}
+              itemLayout="horizontal"
+              dataSource={comments}
+              renderItem={(item: any) => (
+                <li>
+                  <Comment
+                    actions={item.actions}
+                    author={item.author}
+                    avatar={item.avatar}
+                    content={item.content}
+                    datetime={item.datetime}
+                  />
+                </li>
+              )}
+            />
+          ) : (
+            "There is no comment"
+          )}
+        </Spin>
+      </Drawer>
+
       <Row justify="space-between">
         <Col>
           <Form

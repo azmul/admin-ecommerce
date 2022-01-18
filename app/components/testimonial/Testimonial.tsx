@@ -315,7 +315,6 @@ export default function Link() {
                 <Popconfirm
                   title="Are you sure want to delete"
                   onConfirm={confirm}
-                  onVisibleChange={() => console.log("visible change")}
                 >
                   <Button danger> Delete </Button>{" "}
                 </Popconfirm>

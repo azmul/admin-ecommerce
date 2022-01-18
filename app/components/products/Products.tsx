@@ -97,6 +97,13 @@ export default function Link() {
         moment(record?.createdAt).format("MMMM Do YYYY, h:mm:ss a"),
     },
     {
+      title: "Updated Time",
+      dataIndex: "updatedAt",
+      key: "updatedAt",
+      render: (_name: string, record: any) =>
+        moment(record?.updatedAt).format("MMMM Do YYYY, h:mm:ss a"),
+    },
+    {
       title: "Action",
       key: "action",
       // eslint-disable-next-line react/display-name
@@ -525,7 +532,6 @@ export default function Link() {
                   <Popconfirm
                     title="Are you sure want to delete"
                     onConfirm={confirm}
-                    onVisibleChange={() => console.log("visible change")}
                   >
                     <Button danger> Delete </Button>{" "}
                   </Popconfirm>

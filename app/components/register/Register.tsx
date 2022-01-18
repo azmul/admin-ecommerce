@@ -19,7 +19,7 @@ const Register = () => {
           const response: any =  await registerApi.adminRegister(values);
 
           message.success({
-            content: `${t("appointment:congratulation")} ${response.name}!, ${t("appointment:registerSucess")}}`,
+            content: "Sucessfully Registered",
             style: {
               marginTop: '20vh',
             },

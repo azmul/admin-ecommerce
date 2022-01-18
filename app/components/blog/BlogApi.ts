@@ -1,7 +1,6 @@
 import { api } from "../../api/apiHelper";
 import { Endpoints } from "../../api/apiConst";
 import { ApiResponse } from "../../api/models";
-import {ItemType} from "./BlogType";
 
 export const getItems = async (params?: any): Promise<ApiResponse<any>> => {
   const url = `${Endpoints.BLOG}/admin`;
@@ -37,11 +36,20 @@ export const updateItem = async (id: string, params: any): Promise<ApiResponse<a
   return resp.data;
 };
 
-export const createItem = async (params: ItemType): Promise<ApiResponse<any>> => {
+export const createItem = async (params: any): Promise<ApiResponse<any>> => {
     const url = Endpoints.BLOG;
     
     const resp = await api.post<ApiResponse<any>>(url, {
       ...params
     });
     return resp.data;
+};
+
+export const updateCommentItem = async (id: string, params: any): Promise<ApiResponse<any>> => {
+  const url = `${Endpoints.BLOG}/comments/${id}`;
+  
+  const resp = await api.post<ApiResponse<any>>(url, {
+    ...params
+  });
+  return resp.data;
 };
