@@ -358,7 +358,7 @@ export default function Link() {
       }
     >
       <Drawer
-        title={create ? "Create Blog" : "Update Blog"}
+        title={create ? "Create Blog" : `Update Blog #${item?.id}`}
         placement="right"
         onClose={closeDrawer}
         visible={visible}

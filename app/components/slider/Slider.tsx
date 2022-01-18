@@ -227,7 +227,7 @@ export default function Link() {
       }
     >
       <Drawer
-        title={create ? "Create Slider" : "Update Slider"}
+        title={create ? "Create Slider" : `Update Slider #${item?.id}`}
         placement="right"
         onClose={closeDrawer}
         visible={visible}

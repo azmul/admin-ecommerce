@@ -28,6 +28,8 @@ import { capitalize } from "lodash";
 import styles from "./Styles.module.scss";
 import { UserOutlined } from "@ant-design/icons";
 import { DateFormats } from "../../date/dateConst";
+import Reviews from "./Reviews";
+import Questions from "./Question";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -47,6 +49,8 @@ export default function Link() {
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState<any>([]);
   const [slectedDate, setSelectedDate] = useState<any>(undefined);
+  const [visibleReview, setVisibleReview] = useState(false);
+  const [visibleQuestion, setVisibleQuestion] = useState(false);
 
   const profile: any = useSelector(
     (state: RootState) => state.authModel.profile
@@ -304,6 +308,22 @@ export default function Link() {
     }
   }, []);
 
+  const showReviewDrawer = () => {
+    setVisibleReview(true);
+  }
+
+  const closeReviewDrawer = () => {
+    setVisibleReview(false);
+  }
+
+  const showQuestionDrawer = () => {
+    setVisibleQuestion(true);
+  }
+
+  const closeQuestionDrawer = () => {
+    setVisibleQuestion(false);
+  }
+
   useEffect(() => {
     getItems();
     getCategories();
@@ -318,13 +338,16 @@ export default function Link() {
           Create New
         </Button>
       }
-    >
+    > 
+      <Reviews productId={item && item.id} visible={visibleReview} closeReviewDrawer={closeReviewDrawer} />
+      <Questions productId={item && item.id} visible={visibleQuestion} closeQuestionDrawer={closeQuestionDrawer} />
+
       <Drawer
-        title={create ? "Create Product" : "Update Product"}
+        title={create ? "Create Product" : `Update Product #${item?.id}`}
         placement="right"
         onClose={closeDrawer}
         visible={visible}
-        width={550}
+        width={600}
       >
         <Spin spinning={loading}>
           <Form layout="vertical" form={form} onFinish={onFinish}>
@@ -528,6 +551,9 @@ export default function Link() {
                   {create ? "Create" : "Update"}
                 </Button>
                 <Button onClick={closeDrawer}>Close</Button>
+                <Button type="primary" onClick={showReviewDrawer}>Reviews</Button>
+                <Button type="primary" onClick={showQuestionDrawer}>Questions</Button>
+
                 {!create && (
                   <Popconfirm
                     title="Are you sure want to delete"

@@ -234,7 +234,7 @@ export default function Link() {
   return (
     <Card title="Orders List">
       <Drawer
-        title="Update Order"
+        title={`Update Order #${item?.id}`}
         placement="right"
         onClose={closeDrawer}
         visible={visible}
