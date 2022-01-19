@@ -18,7 +18,7 @@ import {
   Tooltip,
   Comment,
   List,
-  Avatar
+  Avatar,
 } from "antd";
 import * as BlogApi from "./BlogApi";
 import useTranslation from "next-translate/useTranslation";
@@ -214,7 +214,7 @@ export default function Link() {
       category: null,
       creator_name: null,
       like_count: null,
-      is_active: null,
+      is_active: true,
       comment: null,
     });
   };
@@ -457,16 +457,19 @@ export default function Link() {
                   {create ? "Create" : "Update"}
                 </Button>
                 <Button onClick={closeDrawer}>Close</Button>
-                <Button type="primary" onClick={openCommentDrawer}>
-                  Comments
-                </Button>
+
                 {!create && (
-                  <Popconfirm
-                    title="Are you sure want to delete"
-                    onConfirm={confirm}
-                  >
-                    <Button danger> Delete </Button>{" "}
-                  </Popconfirm>
+                  <>
+                    <Button type="primary" onClick={openCommentDrawer}>
+                      Comments
+                    </Button>
+                    <Popconfirm
+                      title="Are you sure want to delete"
+                      onConfirm={confirm}
+                    >
+                      <Button danger> Delete </Button>{" "}
+                    </Popconfirm>
+                  </>
                 )}
               </Space>
             </Form.Item>

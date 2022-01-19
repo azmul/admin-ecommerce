@@ -551,16 +551,18 @@ export default function Link() {
                   {create ? "Create" : "Update"}
                 </Button>
                 <Button onClick={closeDrawer}>Close</Button>
-                <Button type="primary" onClick={showReviewDrawer}>Reviews</Button>
-                <Button type="primary" onClick={showQuestionDrawer}>Questions</Button>
-
+                
                 {!create && (
+                  <>
+                  <Button type="primary" onClick={showReviewDrawer}>Reviews</Button>
+                  <Button type="primary" onClick={showQuestionDrawer}>Questions</Button>
                   <Popconfirm
                     title="Are you sure want to delete"
                     onConfirm={confirm}
                   >
                     <Button danger> Delete </Button>{" "}
                   </Popconfirm>
+                  </>
                 )}
               </Space>
             </Form.Item>
