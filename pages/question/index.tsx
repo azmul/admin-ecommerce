@@ -2,9 +2,9 @@ import Head from 'next/head'
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useRouter } from 'next/router';
-import Category from "../../app/components/category/Category";
+import Question from "../../app/components/question/Question";
 
-export default function CategoryPage() {
+export default function QuestionPage() {
   const router = useRouter();
   /** Start Page Access Check */
     const token = useSelector(
@@ -19,9 +19,9 @@ export default function CategoryPage() {
   return (
     <>
       <Head>
-        <title>CategoryPage Page</title>
+        <title>Question Page</title>
       </Head>
-      <Category />
+      <Question />
     </>
   )
 }

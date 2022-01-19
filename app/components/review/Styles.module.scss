@@ -1,0 +1,10 @@
+.marginRight10{
+    margin-right: 8px;
+}
+
+.searchForm {
+    margin-bottom: 20px;
+    :global(.ant-form-item){
+        margin-bottom: 0px;
+    }
+}
