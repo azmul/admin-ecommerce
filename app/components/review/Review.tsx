@@ -17,6 +17,7 @@ import {
   Popconfirm,
   Avatar,
   Skeleton,
+  Modal,
 } from "antd";
 import * as ReviewApi from "./ReviewApi";
 import useTranslation from "next-translate/useTranslation";
@@ -30,15 +31,17 @@ const { RangePicker } = DatePicker;
 export default function Link() {
   const [visible, setVisible] = useState(false);
   const [loading, setloading] = useState(false);
-  const [formSearch] = Form.useForm();
+  const [form] = Form.useForm();
   const { t } = useTranslation("ns1");
   const [items, setItems] = useState([]);
   const [item, setItem] = useState<any>(undefined);
   const [params, setParams] = useState<any>(undefined);
   const [pagination, setpagination] = useState(undefined);
+  const [selectedReview, setselectedReview] = useState<any>(undefined);
   const [slectedDate, setSelectedDate] = useState<any>(undefined);
   const [reviewItem, setReviewItem] = useState<any>(undefined);
   const [review, setReview] = useState<any>([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const columns: any = [
     {
@@ -155,12 +158,96 @@ export default function Link() {
     }
   };
 
+  const handleOk = async () => {
+    const answer = form.getFieldValue("ans");
+    if (!answer) {
+      form.setFields([
+        {
+          name: "ans",
+          errors: ["Please give answer"],
+        },
+      ]);
+      return;
+    }
+    try {
+      await ReviewApi.updateReviewItem(reviewItem._id, {
+        reviewId: selectedReview.id,
+        ans: answer,
+      });
+
+      const newReviews = [...review];
+      const reviewIndex = newReviews.findIndex(
+        (review: any) => Number(review.id) === Number(selectedReview.id)
+      );
+      newReviews[reviewIndex].ans = answer;
+      setReview(newReviews);
+
+      form.setFields([
+        {
+          name: "ans",
+          value: null,
+          errors: [],
+        },
+      ]);
+      setIsModalVisible(false);
+      message.success("Answer added successfully");
+    } catch (error: any) {
+      message.error(error?.message);
+      message.error("Review Not Found");
+    } finally {
+    }
+  };
+
+  const handleCancel = () => {
+    form.setFields([
+      {
+        name: "ans",
+        value: null,
+        errors: [],
+      },
+    ]);
+    setIsModalVisible(false);
+  };
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleAnswer = (review: any) => {
+    showModal();
+    if (review && review?.ans) {
+      form.setFields([
+        {
+          name: "ans",
+          value: review?.ans,
+          errors: [],
+        },
+      ]);
+    }
+    setselectedReview(review);
+  };
+
   useEffect(() => {
     getItems();
   }, [getItems]);
 
   return (
     <Card title="Review List">
+      <Modal
+        title={selectedReview && selectedReview.message}
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <Form form={form}>
+          <Form.Item
+            name="ans"
+            rules={[{ required: true, message: "Please give answer" }]}
+          >
+            <Input.TextArea rows={4} placeholder="Write your answer here..." />
+          </Form.Item>
+        </Form>
+      </Modal>
       <Drawer
         title={`Review Details`}
         placement="right"
@@ -196,7 +283,38 @@ export default function Link() {
                       title={`${item.customerName} (${
                         item.customerPhone
                       }) ${capitalize(moment(item.createdAt).fromNow())}`}
-                      description={item.message}
+                      description={
+                        <>
+                          <p>Review Comment: {item.message}</p>
+                          <p>
+                            Answer:{" "}
+                            {item.ans ? (
+                              <>
+                                {item.ans}
+                                <div>
+                                  <Button
+                                    type="primary"
+                                    ghost
+                                    onClick={() => handleAnswer(item)}
+                                  >
+                                    {" "}
+                                    Edit Answer
+                                  </Button>
+                                </div>
+                              </>
+                            ) : (
+                              <Button
+                                danger
+                                ghost
+                                onClick={() => handleAnswer(item)}
+                              >
+                                {" "}
+                                Give Answer
+                              </Button>
+                            )}
+                          </p>
+                        </>
+                      }
                     />
                   </Skeleton>
                 </List.Item>

@@ -9,6 +9,7 @@ import {
   Input,
   Button,
   Space,
+  Divider
 } from "antd";
 import * as SettingApi from "./SettingApi";
 import moment from "moment";
@@ -48,6 +49,12 @@ export default function SettingPage() {
           twitter_link: item?.twitter_link,
           instagram_link: item?.instagram_link,
           pinterest_link: item?.pinterest_link,
+          bkash_number: item?.bkash_number,
+          nagad_number: item?.nagad_number,
+          rocket_number: item?.rocket_number,
+          bkash_discount: item?.bkash_discount,
+          nagad_discount: item?.nagad_discount,
+          rocket_discount: item?.rocket_discount
         });
       } catch (error: any) {
         message.error(error?.message);
@@ -67,6 +74,7 @@ export default function SettingPage() {
       <Spin spinning={loading}>
         <h3>Last updatedAt: {capitalize(moment(item?.updatedAt).fromNow())}</h3>
         <Form layout="vertical" form={form} onFinish={onFinish}>
+        <Divider orientation="left">Call Center Information</Divider>
           <Row justify="space-between">
             <Col xs={24} sm={11}>
               <Form.Item label="Call Us Number" name="call_us_number">
@@ -91,6 +99,44 @@ export default function SettingPage() {
               </Form.Item>
             </Col>
           </Row>
+          <Divider orientation="left">Payment Information</Divider>
+          <Row justify="space-between">
+            <Col xs={24} sm={11}>
+              <Form.Item label="Bkash Number" name="bkash_number">
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={11}>
+              <Form.Item label="Bkash Discount %" name="bkash_discount">
+                <Input type="number" />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row justify="space-between">
+            <Col xs={24} sm={11}>
+              <Form.Item label="Nagad Number" name="nagad_number">
+                <Input type="number"  />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={11}>
+              <Form.Item label="Nagad Discount %" name="nagad_discount">
+                <Input />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row justify="space-between">
+            <Col xs={24} sm={11}>
+              <Form.Item label="Rocket Number" name="rocket_number">
+                <Input type="number" />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={11}>
+              <Form.Item label="Rocket Discount %" name="rocket_discount">
+                <Input />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Divider orientation="left">Business Address Information</Divider>
           <Row justify="space-between">
             <Col xs={24} sm={11}>
               <Form.Item label="Business Email" name="business_email">
@@ -113,6 +159,7 @@ export default function SettingPage() {
               </Form.Item>
             </Col>
           </Row>
+          <Divider orientation="left">Social Information</Divider>
           <Row justify="space-between">
             <Col xs={24} sm={11}>
               <Form.Item label="Facebook Link" name="facebook_link">

@@ -15,6 +15,7 @@ import {
   DatePicker,
   Row,
   Col,
+  Checkbox,
 } from "antd";
 import * as ProductsApi from "./ProductsApi";
 import useTranslation from "next-translate/useTranslation";
@@ -130,6 +131,7 @@ export default function Link() {
   };
 
   const onFinish = async (values: any) => {
+    console.log(values);
     if (imageData && imageData.length > 0) {
       values.image = imageData.map((image: any) => image.url);
       values.images = imageData;
@@ -184,6 +186,9 @@ export default function Link() {
         new: item.new,
         category: item.category,
         tag: item.tag,
+        is_normal_sell: item.is_normal_sell,
+        is_flash_sell: item.is_flash_sell,
+        is_campaign_sell: item.is_campaign_sell,
         shortDescription: item.shortDescription,
         shortDescription_local: item.shortDescription_local,
         fullDescription: item.fullDescription,
@@ -227,6 +232,9 @@ export default function Link() {
       new: true,
       category: [],
       tag: [],
+      is_normal_sell: true,
+      is_flash_sell: false,
+      is_campaign_sell: false,
       shortDescription: null,
       shortDescription_local: null,
       fullDescription: null,
@@ -310,19 +318,19 @@ export default function Link() {
 
   const showReviewDrawer = () => {
     setVisibleReview(true);
-  }
+  };
 
   const closeReviewDrawer = () => {
     setVisibleReview(false);
-  }
+  };
 
   const showQuestionDrawer = () => {
     setVisibleQuestion(true);
-  }
+  };
 
   const closeQuestionDrawer = () => {
     setVisibleQuestion(false);
-  }
+  };
 
   useEffect(() => {
     getItems();
@@ -338,9 +346,17 @@ export default function Link() {
           Create New
         </Button>
       }
-    > 
-      <Reviews productId={item && item.id} visible={visibleReview} closeReviewDrawer={closeReviewDrawer} />
-      <Questions productId={item && item.id} visible={visibleQuestion} closeQuestionDrawer={closeQuestionDrawer} />
+    >
+      <Reviews
+        productId={item && item.id}
+        visible={visibleReview}
+        closeReviewDrawer={closeReviewDrawer}
+      />
+      <Questions
+        productId={item && item.id}
+        visible={visibleQuestion}
+        closeQuestionDrawer={closeQuestionDrawer}
+      />
 
       <Drawer
         title={create ? "Create Product" : `Update Product #${item?.id}`}
@@ -425,6 +441,24 @@ export default function Link() {
                 <Radio.Button value={false}>Not New</Radio.Button>
               </Radio.Group>
             </Form.Item>
+            <Row>
+              <Col sm={8}>
+                <Form.Item name="is_normal_sell" valuePropName="checked" noStyle>
+                  <Checkbox>Normal Sell</Checkbox>
+                </Form.Item>
+              </Col>
+              <Col sm={8}>
+                <Form.Item name="is_flash_sell" valuePropName="checked" noStyle>
+                  <Checkbox>Flash Sell</Checkbox>
+                </Form.Item>
+              </Col>
+              <Col sm={8}>
+                <Form.Item name="is_campaign_sell" valuePropName="checked" noStyle>
+                  <Checkbox>Campaign Sell</Checkbox>
+                </Form.Item>
+              </Col>
+            </Row>
+            <br />
             <Form.Item label="Image" rules={[{ message: "Please give Image" }]}>
               <ImageUploader
                 data={imageData}
@@ -551,17 +585,21 @@ export default function Link() {
                   {create ? "Create" : "Update"}
                 </Button>
                 <Button onClick={closeDrawer}>Close</Button>
-                
+
                 {!create && (
                   <>
-                  <Button type="primary" onClick={showReviewDrawer}>Reviews</Button>
-                  <Button type="primary" onClick={showQuestionDrawer}>Questions</Button>
-                  <Popconfirm
-                    title="Are you sure want to delete"
-                    onConfirm={confirm}
-                  >
-                    <Button danger> Delete </Button>{" "}
-                  </Popconfirm>
+                    <Button type="primary" onClick={showReviewDrawer}>
+                      Reviews
+                    </Button>
+                    <Button type="primary" onClick={showQuestionDrawer}>
+                      Questions
+                    </Button>
+                    <Popconfirm
+                      title="Are you sure want to delete"
+                      onConfirm={confirm}
+                    >
+                      <Button danger> Delete </Button>{" "}
+                    </Popconfirm>
                   </>
                 )}
               </Space>

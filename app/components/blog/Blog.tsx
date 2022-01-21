@@ -174,6 +174,7 @@ export default function Link() {
         creator_name: item.creator_name,
         category: item.category,
         like_count: item.like_count,
+        product_url: item.product_url,
         is_active: item.is_active,
         comment: item.comment,
       });
@@ -214,6 +215,7 @@ export default function Link() {
       category: null,
       creator_name: null,
       like_count: null,
+      product_url: null,
       is_active: true,
       comment: null,
     });
@@ -390,6 +392,12 @@ export default function Link() {
               label="Like Count"
               name="like_count"
               rules={[{ required: true, message: "Please give like_count" }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              label="Product Url"
+              name="product_url"
             >
               <Input />
             </Form.Item>
