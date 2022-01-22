@@ -350,6 +350,12 @@ export default function Link() {
     getCategories();
   }, [getItems, getCategories]);
 
+  useEffect(() => {
+    if(!visible) {
+      setComments([]);
+    }
+  },[visible])
+
   return (
     <Card
       title="Blogs List"
