@@ -190,7 +190,7 @@ export default function Link() {
   return (
     <Card title="Messages List">
       <Drawer
-        title={create ? "Create Tag" : "Update Tag"}
+        title="Message"
         placement="right"
         onClose={closeDrawer}
         visible={visible}
