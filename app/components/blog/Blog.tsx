@@ -279,7 +279,7 @@ export default function Link() {
       setItemComments([]);
       setLoadingComment(true);
       await BlogApi.updateCommentItem(item._id, {
-        blogId: item.id,
+        id: comment.id,
         isDeleted: true,
       });
       remove(

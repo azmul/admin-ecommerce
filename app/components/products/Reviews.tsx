@@ -36,11 +36,11 @@ export default function Reviews({
     }
   }, []);
 
-  const deleteComment = async (item: any) => {
+  const deleteReview = async (item: any) => {
     try {
         setLoading(true);
         await ReviewApi.updateReviewItem(reviewItem._id, {
-          reviewId: item.id,
+          id: item.id,
           isDeleted: true,
         });
         remove(
@@ -81,7 +81,7 @@ export default function Reviews({
                   <Popconfirm
           key={Math.random()}
           title="Are you sure to delete this review?"
-          onConfirm={() => deleteComment(item)}
+          onConfirm={() => deleteReview(item)}
           okText="Yes"
           cancelText="No"
         >

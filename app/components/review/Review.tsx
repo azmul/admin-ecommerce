@@ -147,7 +147,7 @@ export default function Link() {
     try {
       setloading(true);
       await ReviewApi.updateReviewItem(reviewItem._id, {
-        reviewId: item.id,
+        id: item.id,
         isDeleted: true,
       });
       remove(review, (i: any) => Number(i.id) === Number(item.id));
@@ -171,7 +171,7 @@ export default function Link() {
     }
     try {
       await ReviewApi.updateReviewItem(reviewItem._id, {
-        reviewId: selectedReview.id,
+        id: selectedReview.id,
         ans: answer,
       });
 

@@ -154,7 +154,7 @@ export default function Link() {
     }
     try {
       await QuestionApi.updateQuestionItem(item._id, {
-        questionId: selectedQuestion.id,
+        id: selectedQuestion.id,
         ans: answer,
       });
 
