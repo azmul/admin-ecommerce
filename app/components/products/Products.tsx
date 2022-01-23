@@ -16,6 +16,8 @@ import {
   Row,
   Col,
   Checkbox,
+  Divider,
+  Alert,
 } from "antd";
 import * as ProductsApi from "./ProductsApi";
 import useTranslation from "next-translate/useTranslation";
@@ -27,7 +29,11 @@ import { RootState } from "../../../redux/store";
 import moment from "moment";
 import { capitalize } from "lodash";
 import styles from "./Styles.module.scss";
-import { UserOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  MinusCircleOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import { DateFormats } from "../../date/dateConst";
 import Reviews from "./Reviews";
 import Questions from "./Question";
@@ -131,7 +137,6 @@ export default function Link() {
   };
 
   const onFinish = async (values: any) => {
-    console.log(values);
     if (imageData && imageData.length > 0) {
       values.image = imageData.map((image: any) => image.url);
       values.images = imageData;
@@ -178,11 +183,8 @@ export default function Link() {
         name: item.name,
         name_local: item.name_local,
         price: item.price,
-        price_local: item.price_local,
         discount: item.discount,
-        discount_local: item.discount_local,
         offerEnd: item.offerEnd,
-        offerEnd_local: item.offerEnd_local,
         new: item.new,
         category: item.category,
         tag: item.tag,
@@ -192,8 +194,10 @@ export default function Link() {
         condition: item.condition,
         shortDescription: item.shortDescription,
         shortDescription_local: item.shortDescription_local,
+        fullDescriptionTitle: item.fullDescriptionTitle,
         fullDescription: item.fullDescription,
-        fullDescription_local: item.fullDescription_local,
+        leftSide: item.leftSide,
+        rightSide: item.rightSide,
         is_active: item.is_active,
         comment: item.comment,
         stock: item.stock,
@@ -225,11 +229,8 @@ export default function Link() {
       name: null,
       name_local: null,
       price: null,
-      price_local: null,
       discount: null,
-      discount_local: null,
       offerEnd: null,
-      offerEnd_local: null,
       new: true,
       category: [],
       tag: [],
@@ -239,8 +240,10 @@ export default function Link() {
       condition: null,
       shortDescription: null,
       shortDescription_local: null,
+      fullDescriptionTitle: null,
       fullDescription: null,
-      fullDescription_local: null,
+      leftSide: [],
+      rightSide: [],
       is_active: true,
       comment: null,
       stock: null,
@@ -377,147 +380,6 @@ export default function Link() {
               <Input placeholder="Sku" />
             </Form.Item>
             <Form.Item
-              label="Name"
-              name="name"
-              rules={[{ required: true, message: "Please give name" }]}
-            >
-              <Input placeholder="Name" />
-            </Form.Item>
-            <Form.Item
-              label="Name Local"
-              name="name_local"
-              rules={[{ required: true, message: "Please give name local" }]}
-            >
-              <Input placeholder="Name Local" />
-            </Form.Item>
-            <Form.Item
-              label="Price"
-              name="price"
-              rules={[{ required: true, message: "Please give price" }]}
-            >
-              <Input type="number" placeholder="price" />
-            </Form.Item>
-            <Form.Item
-              label="Price Local"
-              name="price_local"
-              rules={[{ required: true, message: "Please price local" }]}
-            >
-              <Input placeholder="price local" />
-            </Form.Item>
-            <Form.Item
-              label="Discount"
-              name="discount"
-              rules={[{ required: true, message: "Please give Discount" }]}
-            >
-              <Input type="number" placeholder="Discount" />
-            </Form.Item>
-            <Form.Item
-              label="Discount Local"
-              name="discount_local"
-              rules={[
-                { required: true, message: "Please give Discount local" },
-              ]}
-            >
-              <Input placeholder="Discount local" />
-            </Form.Item>
-            <Form.Item
-              label="Offer End"
-              name="offerEnd"
-              rules={[{ required: true, message: "Please give offerEnd" }]}
-            >
-              <Input placeholder="Offer End" />
-            </Form.Item>
-            <Form.Item
-              label="offerEnd Local"
-              name="offerEnd_local"
-              rules={[
-                { required: true, message: "Please give offerEnd local" },
-              ]}
-            >
-              <Input placeholder="Offer End local" />
-            </Form.Item>
-
-            <Form.Item name="new">
-              <Radio.Group>
-                <Radio.Button value={true}>New</Radio.Button>
-                <Radio.Button value={false}>Not New</Radio.Button>
-              </Radio.Group>
-            </Form.Item>
-            <Row>
-              <Col sm={8}>
-                <Form.Item name="is_normal_sell" valuePropName="checked" noStyle>
-                  <Checkbox>Normal Sell</Checkbox>
-                </Form.Item>
-              </Col>
-              <Col sm={8}>
-                <Form.Item name="is_flash_sell" valuePropName="checked" noStyle>
-                  <Checkbox>Flash Sell</Checkbox>
-                </Form.Item>
-              </Col>
-              <Col sm={8}>
-                <Form.Item name="is_campaign_sell" valuePropName="checked" noStyle>
-                  <Checkbox>Campaign Sell</Checkbox>
-                </Form.Item>
-              </Col>
-            </Row>
-            <br />
-            <Form.Item label="Image" rules={[{ message: "Please give Image" }]}>
-              <ImageUploader
-                data={imageData}
-                maxImageNumber={6}
-                uploadPreset="products"
-                handleImages={getImages}
-              />
-            </Form.Item>
-            <Form.Item
-              label="Condition"
-              name="condition"
-            >
-              <Input.TextArea placeholder="Condition" />
-            </Form.Item>
-            <Form.Item
-              label="Short Description"
-              name="shortDescription"
-              rules={[
-                { required: true, message: "Please give short Description" },
-              ]}
-            >
-              <Input.TextArea placeholder="shortDescription" />
-            </Form.Item>
-            <Form.Item
-              label="Short Description Local"
-              name="shortDescription_local"
-              rules={[
-                {
-                  required: true,
-                  message: "Please give short Description local",
-                },
-              ]}
-            >
-              <Input.TextArea placeholder="Short Description local" />
-            </Form.Item>
-            <Form.Item
-              label="Full Description"
-              name="fullDescription"
-              rules={[
-                { required: true, message: "Please give fullDescription" },
-              ]}
-            >
-              <Input.TextArea placeholder="full Description" />
-            </Form.Item>
-            <Form.Item
-              label="Full Description Local"
-              name="fullDescription_local"
-              rules={[
-                {
-                  required: true,
-                  message: "Please give fullDescription local",
-                },
-              ]}
-            >
-              <Input.TextArea placeholder="Full Description local" />
-            </Form.Item>
-            <Form.Item
               label="Category"
               name="category"
               rules={[{ required: true, message: "Please give Category" }]}
@@ -556,18 +418,215 @@ export default function Link() {
               </Select>
             </Form.Item>
             <Form.Item
-              label="Stock"
-              name="stock"
-              rules={[{ required: true, message: "Please give Stock" }]}
+              label="Name"
+              name="name"
+              rules={[{ required: true, message: "Please give name" }]}
             >
-              <Input type="number" placeholder="Stock" />
+              <Input placeholder="Name" />
             </Form.Item>
-            <Form.Item name="is_active">
+            <Form.Item
+              label="Name Local"
+              name="name_local"
+            >
+              <Input placeholder="Name Local" />
+            </Form.Item>
+            <Row justify="space-between">
+              <Col md={10}>
+                <Form.Item
+                  label="Price"
+                  name="price"
+                  rules={[{ required: true, message: "Please give price" }]}
+                >
+                  <Input type="number" placeholder="price" />
+                </Form.Item>
+              </Col>
+              <Col md={4}>
+                <Form.Item
+                  label="Discount"
+                  name="discount"
+                  rules={[{ required: true, message: "Please give Discount" }]}
+                >
+                  <Input type="number" placeholder="Discount" />
+                </Form.Item>
+              </Col>
+              <Col md={8}>
+                <Form.Item
+                  label="Stock"
+                  name="stock"
+                  rules={[{ required: true, message: "Please give Stock" }]}
+                >
+                  <Input type="number" placeholder="Stock" />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Form.Item
+              label="Offer End"
+              name="offerEnd"
+            >
+              <Input placeholder="Offer End" />
+            </Form.Item>
+            <Form.Item name="new" label="Product Status">
+              <Radio.Group>
+                <Radio.Button value={true}>New Product</Radio.Button>
+                <Radio.Button value={false}>Not New Product</Radio.Button>
+              </Radio.Group>
+            </Form.Item>
+            <Row>
+              <Col sm={8}>
+                <Form.Item
+                  name="is_normal_sell"
+                  valuePropName="checked"
+                  noStyle
+                >
+                  <Checkbox>Normal Sell</Checkbox>
+                </Form.Item>
+              </Col>
+              <Col sm={8}>
+                <Form.Item name="is_flash_sell" valuePropName="checked" noStyle>
+                  <Checkbox>Flash Sell</Checkbox>
+                </Form.Item>
+              </Col>
+              <Col sm={8}>
+                <Form.Item
+                  name="is_campaign_sell"
+                  valuePropName="checked"
+                  noStyle
+                >
+                  <Checkbox>Campaign Sell</Checkbox>
+                </Form.Item>
+              </Col>
+            </Row>
+            <br />
+            <Form.Item label="Condition" name="condition">
+              <Input.TextArea placeholder="Condition" />
+            </Form.Item>
+
+            <Form.Item name="is_active" label="Product Activeness">
               <Radio.Group>
                 <Radio.Button value={true}>Active</Radio.Button>
                 <Radio.Button value={false}>InActive</Radio.Button>
               </Radio.Group>
             </Form.Item>
+
+            <Form.Item
+              label="Short Description"
+              name="shortDescription"
+              rules={[
+                { required: true, message: "Please give short Description" },
+              ]}
+            >
+              <Input.TextArea placeholder="shortDescription" />
+            </Form.Item>
+            <Form.Item
+              label="Short Description Local"
+              name="shortDescription_local"
+            >
+              <Input.TextArea placeholder="Short Description local" />
+            </Form.Item>
+            <Divider>Start Full Description</Divider>
+            <Form.Item
+              label="Title"
+              name="fullDescriptionTitle"
+              rules={[
+                {
+                  required: true,
+                  message: "Please give fullDescription Title",
+                },
+              ]}
+            >
+              <Input.TextArea rows={2} placeholder="full Description" />
+            </Form.Item>
+            <Form.Item
+              label="Full Description"
+              name="fullDescription"
+              rules={[
+                {
+                  required: true,
+                  message: "Please give fullDescription",
+                },
+              ]}
+            >
+              <Input.TextArea rows={4} placeholder="Full Description" />
+            </Form.Item>
+            <div>Left Side Description</div>
+            <Form.List name="leftSide">
+              {(fields, { add, remove }) => (
+                <>
+                  {fields.map(({ key, name, ...restField }) => (
+                    <Space
+                      key={key}
+                      style={{ display: "flex", marginBottom: 3 }}
+                      align="baseline"
+                    >
+                      <Form.Item {...restField} name={[name, "title"]}>
+                        <Input placeholder="Title" />
+                      </Form.Item>
+                      <Form.Item {...restField} name={[name, "data"]}>
+                        <Input placeholder="Description" />
+                      </Form.Item>
+                      <MinusCircleOutlined onClick={() => remove(name)} />
+                    </Space>
+                  ))}
+                  <Form.Item>
+                    <Button
+                      type="dashed"
+                      onClick={() => add()}
+                      block
+                      icon={<PlusOutlined />}
+                    >
+                      Add field
+                    </Button>
+                  </Form.Item>
+                </>
+              )}
+            </Form.List>
+            <div>Right Side Description</div>
+            <Form.List name="rightSide">
+              {(fields, { add, remove }) => (
+                <>
+                  {fields.map(({ key, name, ...restField }) => (
+                    <Space
+                      key={key}
+                      style={{ display: "flex", marginBottom: 3 }}
+                      align="baseline"
+                    >
+                      <Form.Item {...restField} name={[name, "title"]}>
+                        <Input placeholder="Title" />
+                      </Form.Item>
+                      <Form.Item {...restField} name={[name, "data"]}>
+                        <Input placeholder="Description" />
+                      </Form.Item>
+                      <MinusCircleOutlined onClick={() => remove(name)} />
+                    </Space>
+                  ))}
+                  <Form.Item>
+                    <Button
+                      type="dashed"
+                      onClick={() => add()}
+                      block
+                      icon={<PlusOutlined />}
+                    >
+                      Add field
+                    </Button>
+                  </Form.Item>
+                </>
+              )}
+            </Form.List>
+
+            <Divider>End Full Description</Divider>
+          
+            <br />
+            <Alert message="If you add/delete image please Click Update/Create Button in the below otherwise image would not be saved" type="success" />
+            <Form.Item label="Image" rules={[{ message: "Please give Image" }]}>
+              <ImageUploader
+                data={imageData}
+                maxImageNumber={6}
+                uploadPreset="products"
+                handleImages={getImages}
+              />
+            </Form.Item>
+
+            <Divider>Updated Information</Divider>
 
             {!create && (
               <Form.Item label="Last Updated By">

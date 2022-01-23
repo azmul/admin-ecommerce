@@ -11,6 +11,7 @@ import {
   Space,
   Popconfirm,
   Radio,
+  Alert
 } from "antd";
 import * as SliderApi from "./SliderApi";
 import useTranslation from "next-translate/useTranslation";
@@ -231,6 +232,7 @@ export default function Link() {
         placement="right"
         onClose={closeDrawer}
         visible={visible}
+        width={550}
       >
                <Spin spinning={loading}>
 
@@ -264,13 +266,6 @@ export default function Link() {
             <Input placeholder="subtitle local name" />
           </Form.Item>
           <Form.Item
-            label="Image"
-            name="images"
-            rules={[{ message: "Please give image" }]}
-          >
-            <ImageUploader data={imageData} maxImageNumber={1} uploadPreset="sliders" handleImages={getImages} />
-          </Form.Item>
-          <Form.Item
             label="Url"
             name="url"
             rules={[{ required: true, message: "Please give url" }]}
@@ -283,6 +278,15 @@ export default function Link() {
               <Radio.Button value={true}>Active</Radio.Button>
               <Radio.Button value={false}>InActive</Radio.Button>
             </Radio.Group>
+          </Form.Item>
+
+          <Alert message="If you add/delete image please Click Update/Create Button in the below otherwise image would not be saved" type="success" />
+          <Form.Item
+            label="Image"
+            name="images"
+            rules={[{ message: "Please give image" }]}
+          >
+            <ImageUploader data={imageData} maxImageNumber={1} uploadPreset="sliders" handleImages={getImages} />
           </Form.Item>
 
           {!create && (

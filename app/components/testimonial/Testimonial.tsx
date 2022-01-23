@@ -11,6 +11,7 @@ import {
   Space,
   Popconfirm,
   Radio,
+  Alert,
 } from "antd";
 import * as TestimonialApi from "./TestimonialApi";
 import useTranslation from "next-translate/useTranslation";
@@ -239,6 +240,7 @@ export default function Link() {
         onClose={closeDrawer}
         visible={visible}
         destroyOnClose={true}
+        width={550}
       >
         <Spin spinning={loading}>
         <Form layout="vertical" form={form} onFinish={onFinish}>
@@ -277,18 +279,20 @@ export default function Link() {
           >
             <Input placeholder="Content local name" />
           </Form.Item>
-          <Form.Item
-            label="Image"
-            rules={[{ message: "Please give image" }]}
-          >
-            <ImageUploader data={imageData} maxImageNumber={1} uploadPreset="sliders" handleImages={getImages} />
-          </Form.Item>
 
           <Form.Item name="is_active">
             <Radio.Group>
               <Radio.Button value={true}>Active</Radio.Button>
               <Radio.Button value={false}>InActive</Radio.Button>
             </Radio.Group>
+          </Form.Item>
+
+          <Alert message="If you add/delete image please Click Update/Create Button in the below otherwise image would not be saved" type="success" />
+          <Form.Item
+            label="Image"
+            rules={[{ message: "Please give image" }]}
+          >
+            <ImageUploader data={imageData} maxImageNumber={1} uploadPreset="sliders" handleImages={getImages} />
           </Form.Item>
 
           {!create && (

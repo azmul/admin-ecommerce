@@ -19,6 +19,8 @@ import {
   Comment,
   List,
   Avatar,
+  Alert,
+  Divider,
 } from "antd";
 import * as BlogApi from "./BlogApi";
 import useTranslation from "next-translate/useTranslation";
@@ -29,7 +31,11 @@ import { RootState } from "../../../redux/store";
 import moment from "moment";
 import { capitalize, remove } from "lodash";
 import styles from "./Styles.module.scss";
-import { UserOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  MinusCircleOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import { DateFormats } from "../../date/dateConst";
 
 const { Option } = Select;
@@ -172,6 +178,8 @@ export default function Link() {
         content: item.content,
         content_local: item.content_local,
         creator_name: item.creator_name,
+        content_items: item.content_items,
+        admin_message: item.admin_message,
         category: item.category,
         like_count: item.like_count,
         product_url: item.product_url,
@@ -214,6 +222,8 @@ export default function Link() {
       content_local: null,
       category: null,
       creator_name: null,
+      content_items: [],
+      admin_message: null,
       like_count: null,
       product_url: null,
       is_active: true,
@@ -351,10 +361,10 @@ export default function Link() {
   }, [getItems, getCategories]);
 
   useEffect(() => {
-    if(!visible) {
+    if (!visible) {
       setComments([]);
     }
-  },[visible])
+  }, [visible]);
 
   return (
     <Card
@@ -375,54 +385,6 @@ export default function Link() {
         <Spin spinning={loading}>
           <Form layout="vertical" form={form} onFinish={onFinish}>
             <Form.Item
-              label="Title"
-              name="title"
-              rules={[{ required: true, message: "Please title" }]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item label="Title Local" name="title_local">
-              <Input />
-            </Form.Item>
-            <Form.Item
-              label="Content Local"
-              name="content"
-              rules={[{ required: true, message: "Please give content" }]}
-            >
-              <Input.TextArea />
-            </Form.Item>
-            <Form.Item label="Content Local" name="content_local">
-              <Input.TextArea />
-            </Form.Item>
-            <Form.Item
-              label="Like Count"
-              name="like_count"
-              rules={[{ required: true, message: "Please give like_count" }]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              label="Product Url"
-              name="product_url"
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              label="Creator Name"
-              name="creator_name"
-              rules={[{ required: true, message: "Please give creator name" }]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item label="Image" rules={[{ message: "Please give Image" }]}>
-              <ImageUploader
-                data={imageData}
-                maxImageNumber={1}
-                uploadPreset="blogs"
-                handleImages={getImages}
-              />
-            </Form.Item>
-            <Form.Item
               label="Category"
               name="category"
               rules={[{ required: true, message: "Please give Category" }]}
@@ -440,11 +402,114 @@ export default function Link() {
                   ))}
               </Select>
             </Form.Item>
+            <Form.Item
+              label="Creator Name"
+              name="creator_name"
+              rules={[{ required: true, message: "Please give creator name" }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              label="Title"
+              name="title"
+              rules={[{ required: true, message: "Please title" }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item label="Title Local" name="title_local">
+              <Input />
+            </Form.Item>
+            <Form.Item
+              label="Like Count"
+              name="like_count"
+              rules={[{ required: true, message: "Please give like_count" }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item label="Product Url" name="product_url">
+              <Input />
+            </Form.Item>
             <Form.Item name="is_active">
               <Radio.Group>
                 <Radio.Button value={true}>Active</Radio.Button>
                 <Radio.Button value={false}>InActive</Radio.Button>
               </Radio.Group>
+            </Form.Item>
+            <Form.Item
+              label="Content Local"
+              name="content"
+              rules={[{ required: true, message: "Please give content" }]}
+            >
+              <Input.TextArea />
+            </Form.Item>
+            <Form.Item label="Content Local" name="content_local">
+              <Input.TextArea />
+            </Form.Item>
+            <br />
+            <h3>Add Comment Sections</h3>
+            <br />
+            <Form.List name="content_items">
+              {(fields, { add, remove }) => (
+                <>
+                  {fields.map(({ key, name, ...restField }) => (
+                    <>
+                      <Row>
+                        <Col md={22} xs={22}>
+                          <Form.Item
+                            {...restField}
+                            name={[name, "title"]}
+                            rules={[
+                              { required: true, message: "Please title" },
+                            ]}
+                          >
+                            <Input placeholder="Title" />
+                          </Form.Item>
+                        </Col>
+                        <Col md={2} xs={2} className={styles.deleteList}>
+                          <MinusCircleOutlined onClick={() => remove(name)} />
+                        </Col>
+                      </Row>
+
+                      <Form.Item
+                        {...restField}
+                        name={[name, "description"]}
+                        rules={[
+                          { required: true, message: "Please Description" },
+                        ]}
+                      >
+                        <Input.TextArea placeholder="Description" />
+                      </Form.Item>
+                      <Divider />
+                    </>
+                  ))}
+                  <Form.Item>
+                    <Button
+                      type="dashed"
+                      onClick={() => add()}
+                      block
+                      icon={<PlusOutlined />}
+                    >
+                      Add field
+                    </Button>
+                  </Form.Item>
+                </>
+              )}
+            </Form.List>
+            <Form.Item label="Admin Message" name="admin_message">
+              <Input.TextArea placeholder="Give admin Message" />
+            </Form.Item>
+            <br />
+            <Alert
+              message="If you add/delete image please Click Update/Create Button in the below otherwise image would not be saved"
+              type="success"
+            />
+            <Form.Item label="Image" rules={[{ message: "Please give Image" }]}>
+              <ImageUploader
+                data={imageData}
+                maxImageNumber={1}
+                uploadPreset="blogs"
+                handleImages={getImages}
+              />
             </Form.Item>
 
             {!create && (
