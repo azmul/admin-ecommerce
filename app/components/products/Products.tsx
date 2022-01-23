@@ -189,6 +189,7 @@ export default function Link() {
         is_normal_sell: item.is_normal_sell,
         is_flash_sell: item.is_flash_sell,
         is_campaign_sell: item.is_campaign_sell,
+        condition: item.condition,
         shortDescription: item.shortDescription,
         shortDescription_local: item.shortDescription_local,
         fullDescription: item.fullDescription,
@@ -235,6 +236,7 @@ export default function Link() {
       is_normal_sell: true,
       is_flash_sell: false,
       is_campaign_sell: false,
+      condition: null,
       shortDescription: null,
       shortDescription_local: null,
       fullDescription: null,
@@ -466,6 +468,12 @@ export default function Link() {
                 uploadPreset="products"
                 handleImages={getImages}
               />
+            </Form.Item>
+            <Form.Item
+              label="Condition"
+              name="condition"
+            >
+              <Input.TextArea placeholder="Condition" />
             </Form.Item>
             <Form.Item
               label="Short Description"
