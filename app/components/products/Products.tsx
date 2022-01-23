@@ -196,6 +196,7 @@ export default function Link() {
         shortDescription_local: item.shortDescription_local,
         fullDescriptionTitle: item.fullDescriptionTitle,
         fullDescription: item.fullDescription,
+        youtubeLink: item.youtubeLink,
         leftSide: item.leftSide,
         rightSide: item.rightSide,
         is_active: item.is_active,
@@ -237,6 +238,7 @@ export default function Link() {
       is_normal_sell: true,
       is_flash_sell: false,
       is_campaign_sell: false,
+      youtubeLink: null,
       condition: null,
       shortDescription: null,
       shortDescription_local: null,
@@ -614,6 +616,13 @@ export default function Link() {
             </Form.List>
 
             <Divider>End Full Description</Divider>
+
+            <Form.Item
+              label="Youtube Link"
+              name="youtubeLink"
+            >
+              <Input placeholder="Youtube Link" />
+            </Form.Item>
           
             <br />
             <Alert message="If you add/delete image please Click Update/Create Button in the below otherwise image would not be saved" type="success" />
