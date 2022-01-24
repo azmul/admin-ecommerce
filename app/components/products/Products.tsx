@@ -618,10 +618,10 @@ export default function Link() {
             <Divider>End Full Description</Divider>
 
             <Form.Item
-              label="Youtube Link"
+              label="Youtube Video ID"
               name="youtubeLink"
             >
-              <Input placeholder="Youtube Link" />
+              <Input placeholder="Youtube video ID" />
             </Form.Item>
           
             <br />
