@@ -197,6 +197,8 @@ export default function Link() {
         fullDescriptionTitle: item.fullDescriptionTitle,
         fullDescription: item.fullDescription,
         youtubeLink: item.youtubeLink,
+        isHomePage: item.isHomePage,
+        isCollectionPage: item.isCollectionPage,
         leftSide: item.leftSide,
         rightSide: item.rightSide,
         is_active: item.is_active,
@@ -238,6 +240,8 @@ export default function Link() {
       is_normal_sell: true,
       is_flash_sell: false,
       is_campaign_sell: false,
+      isHomePage: false,
+      isCollectionPage: true,
       youtubeLink: null,
       condition: null,
       shortDescription: null,
@@ -384,7 +388,12 @@ export default function Link() {
             <Form.Item
               label="Category"
               name="category"
-              rules={[{ required: true, message: "Please give Category" }]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please give Category",
+                },
+              ]}
             >
               <Select
                 mode="multiple"
@@ -403,7 +412,12 @@ export default function Link() {
             <Form.Item
               label="Tag"
               name="tag"
-              rules={[{ required: true, message: "Please give Tag" }]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please give Tag",
+                },
+              ]}
             >
               <Select
                 mode="multiple"
@@ -422,14 +436,17 @@ export default function Link() {
             <Form.Item
               label="Name"
               name="name"
-              rules={[{ required: true, message: "Please give name" }]}
+              rules={[
+                {
+                  whitespace: false,
+                  required: true,
+                  message: "Please give name",
+                },
+              ]}
             >
               <Input placeholder="Name" />
             </Form.Item>
-            <Form.Item
-              label="Name Local"
-              name="name_local"
-            >
+            <Form.Item label="Name Local" name="name_local">
               <Input placeholder="Name Local" />
             </Form.Item>
             <Row justify="space-between">
@@ -461,10 +478,7 @@ export default function Link() {
                 </Form.Item>
               </Col>
             </Row>
-            <Form.Item
-              label="Offer End"
-              name="offerEnd"
-            >
+            <Form.Item label="Offer End" name="offerEnd">
               <Input placeholder="Offer End" />
             </Form.Item>
             <Form.Item name="new" label="Product Status">
@@ -499,10 +513,24 @@ export default function Link() {
               </Col>
             </Row>
             <br />
+            <Row>
+              <Col sm={10}>
+                  <Form.Item name="isHomePage" valuePropName="checked" noStyle>
+                  <Checkbox>Is Home Page</Checkbox>
+                </Form.Item>
+              </Col>
+              <Col sm={10}>
+                  <Form.Item name="isCollectionPage" valuePropName="checked" noStyle>
+                  <Checkbox>Is Collection Page</Checkbox>
+                </Form.Item>
+              </Col>
+            </Row>
+            <br />
+            <br />
             <Form.Item label="Condition" name="condition">
               <Input.TextArea placeholder="Condition" />
             </Form.Item>
-
+          
             <Form.Item name="is_active" label="Product Activeness">
               <Radio.Group>
                 <Radio.Button value={true}>Active</Radio.Button>
@@ -617,15 +645,15 @@ export default function Link() {
 
             <Divider>End Full Description</Divider>
 
-            <Form.Item
-              label="Youtube Video ID"
-              name="youtubeLink"
-            >
+            <Form.Item label="Youtube Video ID" name="youtubeLink">
               <Input placeholder="Youtube video ID" />
             </Form.Item>
-          
+
             <br />
-            <Alert message="If you add/delete image please Click Update/Create Button in the below otherwise image would not be saved" type="success" />
+            <Alert
+              message="If you add/delete image please Click Update/Create Button in the below otherwise image would not be saved"
+              type="success"
+            />
             <Form.Item label="Image" rules={[{ message: "Please give Image" }]}>
               <ImageUploader
                 data={imageData}

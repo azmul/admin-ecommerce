@@ -195,16 +195,17 @@ export default function Link() {
 
         <Form layout="vertical" form={form} onFinish={onFinish}>
           <Form.Item
+            
             label="Name"
             name="name"
-            rules={[{ required: true, message: "Please give name" }]}
+            rules={[{ whitespace: false, required: true, message: "Please give name" }]}
           >
             <Input placeholder="name" />
           </Form.Item>
           <Form.Item
             label="Local Name"
             name="name_local"
-            rules={[{ required: true, message: "Please give local name" }]}
+            rules={[{ required: true, whitespace: false, message: "Please give local name" }]}
           >
             <Input placeholder="local name" />
           </Form.Item>
