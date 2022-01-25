@@ -37,6 +37,7 @@ import {
 import { DateFormats } from "../../date/dateConst";
 import Reviews from "./Reviews";
 import Questions from "./Question";
+import { COLORS } from "../common/colorConts";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -137,6 +138,7 @@ export default function Link() {
   };
 
   const onFinish = async (values: any) => {
+    console.log(values);
     if (imageData && imageData.length > 0) {
       values.image = imageData.map((image: any) => image.url);
       values.images = imageData;
@@ -196,6 +198,7 @@ export default function Link() {
         shortDescription_local: item.shortDescription_local,
         fullDescriptionTitle: item.fullDescriptionTitle,
         fullDescription: item.fullDescription,
+        variation: item.variation,
         youtubeLink: item.youtubeLink,
         isHomePage: item.isHomePage,
         isCollectionPage: item.isCollectionPage,
@@ -478,6 +481,103 @@ export default function Link() {
                 </Form.Item>
               </Col>
             </Row>
+            <h3>Variation</h3>
+            <Form.List name="variation">
+              {(fields, { add, remove }) => (
+                <>
+                  {fields.map(({ key, name, ...restField }) => (
+                    <Space
+                      key={key}
+                      style={{ display: "flex", marginBottom: 3 }}
+                      align="baseline"
+                    >
+                      <Form.Item {...restField} name={[name, "color"]}>
+                        <Select
+                          placeholder="Please select Color"
+                          style={{ width: "100%" }}
+                        >
+                          {COLORS &&
+                            COLORS.length > 0 &&
+                            COLORS.map((color: any) => (
+                              <Option key={color.value} value={color.value}>
+                                {color.color}
+                              </Option>
+                            ))}
+                        </Select>
+                      </Form.Item>
+                      <Form.List name={[key, "size"]}>
+                        {(size, { add, remove }) => {
+                          return (
+                            <>
+                              {size.map(({ key, name, ...restField }) => (
+                                <Space
+                                  key={key}
+                                  style={{ display: "flex", marginBottom: 8 }}
+                                  align="start"
+                                >
+                                  <Form.Item
+                                    {...restField}
+                                    name={[name, "name"]}
+                                    rules={[
+                                      {
+                                        required: true,
+                                        message: "Size Name Missing",
+                                      },
+                                    ]}
+                                  >
+                                    <Input placeholder="size" />
+                                  </Form.Item>
+                                  <Form.Item
+                                    {...restField}
+                                    name={[name, "stock"]}
+                                    rules={[
+                                      {
+                                        required: true,
+                                        message: "Size Stock Missing",
+                                      },
+                                    ]}
+                                  >
+                                    <Input type="number" placeholder="stock" />
+                                  </Form.Item>
+                                  <MinusCircleOutlined
+                                    onClick={() => {
+                                      remove(name);
+                                    }}
+                                  />
+                                </Space>
+                              ))}
+                              <Form.Item>
+                                <Button
+                                  type="dashed"
+                                  onClick={() => {
+                                    add();
+                                  }}
+                                >
+                                  <PlusOutlined /> Add Size
+                                </Button>
+                              </Form.Item>
+                            </>
+                          );
+                        }}
+                      </Form.List>
+                      <Button danger onClick={() => remove(name)}>
+                        Delete
+                      </Button>
+                    </Space>
+                  ))}
+                  <Form.Item>
+                    <Button
+                      type="dashed"
+                      onClick={() => add()}
+                      block
+                      icon={<PlusOutlined />}
+                    >
+                      Add Variation
+                    </Button>
+                  </Form.Item>
+                </>
+              )}
+            </Form.List>
             <Form.Item label="Offer End" name="offerEnd">
               <Input placeholder="Offer End" />
             </Form.Item>
@@ -512,15 +612,20 @@ export default function Link() {
                 </Form.Item>
               </Col>
             </Row>
+
             <br />
             <Row>
               <Col sm={10}>
-                  <Form.Item name="isHomePage" valuePropName="checked" noStyle>
+                <Form.Item name="isHomePage" valuePropName="checked" noStyle>
                   <Checkbox>Is Home Page</Checkbox>
                 </Form.Item>
               </Col>
               <Col sm={10}>
-                  <Form.Item name="isCollectionPage" valuePropName="checked" noStyle>
+                <Form.Item
+                  name="isCollectionPage"
+                  valuePropName="checked"
+                  noStyle
+                >
                   <Checkbox>Is Collection Page</Checkbox>
                 </Form.Item>
               </Col>
@@ -530,7 +635,7 @@ export default function Link() {
             <Form.Item label="Condition" name="condition">
               <Input.TextArea placeholder="Condition" />
             </Form.Item>
-          
+
             <Form.Item name="is_active" label="Product Activeness">
               <Radio.Group>
                 <Radio.Button value={true}>Active</Radio.Button>
