@@ -25,7 +25,6 @@ export default function Home() {
         <title>Home</title>
       </Head>
       <Card>
-        <h1>{t("common:youAdmin")}</h1>
         <HomePage />
       </Card>
     </>

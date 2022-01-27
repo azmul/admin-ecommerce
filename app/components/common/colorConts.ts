@@ -9,4 +9,5 @@ export const COLORS = [
   { color: "Black", value: "black" },
   { color: "Orange", value: "orange" },
   {color: "Brown", value: "brown" },
+  {color: "Pink", value: "pink" },
 ];
