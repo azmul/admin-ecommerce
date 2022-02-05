@@ -138,13 +138,15 @@ export default function Link() {
   };
 
   const onFinish = async (values: any) => {
-    console.log(values);
     if (imageData && imageData.length > 0) {
       values.image = imageData.map((image: any) => image.url);
       values.images = imageData;
     } else {
       values.image = [];
       values.images = [];
+    }
+    if(values.variation && values.variation.length === 0) {
+      values.variation = null;
     }
     try {
       setloading(true);
