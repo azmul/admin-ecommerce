@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { RootState } from "redux/store";
 import { useRouter } from 'next/router';
-import Category from "../../app/components/category/Category";
+import Category from "app/components/category/Category";
 
 export default function CategoryPage() {
   const router = useRouter();

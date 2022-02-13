@@ -17,10 +17,10 @@ import {
 import * as MessagesApi from "./MessagesApi";
 import useTranslation from "next-translate/useTranslation";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
+import { RootState } from "redux/store";
 import moment from "moment";
 import { capitalize } from "lodash";
-import { DateFormats } from "../../date/dateConst";
+import { DateFormats } from "app/date/dateConst";
 
 const { RangePicker } = DatePicker;
 

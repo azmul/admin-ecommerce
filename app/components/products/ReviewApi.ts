@@ -1,7 +1,7 @@
 
-import { api } from "../../api/apiHelper";
-import { Endpoints } from "../../api/apiConst";
-import { ApiResponse } from "../../api/models";
+import { api } from "app/api/apiHelper";
+import { Endpoints } from "app/api/apiConst";
+import { ApiResponse } from "app/api/models";
 
 export const getReviewByProductId = async (id: number): Promise<ApiResponse<any>> => {
     const url = `${Endpoints.REVIEW}/product/${id}`;

@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { RootState } from "redux/store";
 import { useRouter } from 'next/router';
-import Category from "../../app/components/tag/Tag";
+import Category from "app/components/tag/Tag";
 
 export default function TagPage() {
   const router = useRouter();

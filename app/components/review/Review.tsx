@@ -23,7 +23,7 @@ import * as ReviewApi from "./ReviewApi";
 import useTranslation from "next-translate/useTranslation";
 import moment from "moment";
 import { UserOutlined } from "@ant-design/icons";
-import { DateFormats } from "../../date/dateConst";
+import { DateFormats } from "app/date/dateConst";
 import { capitalize, remove } from "lodash";
 
 const { RangePicker } = DatePicker;

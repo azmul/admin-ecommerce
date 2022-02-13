@@ -1,7 +1,7 @@
 import React from "react";
 import { Tabs, Card, Row, Col } from 'antd';
-import Login from "../../app/components/login/Login";
-import Register from "../../app/components/register/Register";
+import Login from "app/components/login/Login";
+import Register from "app/components/register/Register";
 import useTranslation from 'next-translate/useTranslation'
 
 const { TabPane } = Tabs;

@@ -17,11 +17,11 @@ import {
 } from "antd";
 import * as ProductsApi from "./CustomersApi";
 import useTranslation from "next-translate/useTranslation";
-import { DELIVERY } from "../../api/commonConst";
+import { DELIVERY } from "app/api/commonConst";
 import moment from "moment";
 import styles from "./Styles.module.scss";
 import { UserOutlined } from "@ant-design/icons";
-import { DateFormats } from "../../date/dateConst";
+import { DateFormats } from "app/date/dateConst";
 
 const { RangePicker } = DatePicker;
 

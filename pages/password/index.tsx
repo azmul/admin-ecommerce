@@ -1,6 +1,6 @@
-import ChangePassword from "../../app/components/changepassword/ChangePassword";
+import ChangePassword from "app/components/changepassword/ChangePassword";
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { RootState } from "redux/store";
 import { useRouter } from 'next/router';
 
 export default function PasswordPage() {

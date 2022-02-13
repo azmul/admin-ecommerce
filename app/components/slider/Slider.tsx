@@ -17,7 +17,7 @@ import * as SliderApi from "./SliderApi";
 import useTranslation from "next-translate/useTranslation";
 import ImageUploader from "../imageUploader/";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
+import { RootState } from "redux/store";
 import moment from "moment";
 import { capitalize } from "lodash";
 

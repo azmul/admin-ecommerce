@@ -1,6 +1,6 @@
-import { api } from "../../api/apiHelper";
-import { Endpoints } from "../../api/apiConst";
-import { ApiResponse } from "../../api/models";
+import { api } from "app/api/apiHelper";
+import { Endpoints } from "app/api/apiConst";
+import { ApiResponse } from "app/api/models";
 
 export const getItems = async (params?: any): Promise<ApiResponse<any>> => {
   const url = `${Endpoints.BLOG}/admin`;

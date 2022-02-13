@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { RootState } from "redux/store";
 import { useRouter } from 'next/router';
-import Products from "../../app/components/products/Products";
+import Products from "app/components/products/Products";
 
 export default function ProductsPage() {
   const router = useRouter();

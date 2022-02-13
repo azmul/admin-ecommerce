@@ -3,7 +3,7 @@ import { Form, Input, Button, Card, message} from 'antd';
 import * as changePasswordApi from "./ChangePasswordApi";
 import { ChangePasswordType } from "./ChangePasswordType";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
+import { RootState } from "redux/store";
 import {ErrorBoundary} from 'react-error-boundary'
 import ErrorFallback from "../ui/ErrorFallback"
 import useTranslation from 'next-translate/useTranslation'

@@ -5,8 +5,8 @@ import { Layout } from 'antd';
 import { useRouter } from 'next/router';
 import styles from "./Layout.module.scss";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
-import { useStore } from "../../../redux/hooks";
+import { RootState } from "redux/store";
+import { useStore } from "redux/hooks";
 import {
   useWindowHeight,
 } from '@react-hook/window-size'

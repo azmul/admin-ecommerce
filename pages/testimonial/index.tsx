@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { RootState } from "redux/store";
 import { useRouter } from 'next/router';
-import Testimonial from "../../app/components/testimonial/Testimonial";
+import Testimonial from "app/components/testimonial/Testimonial";
 
 export default function TestimonialPage() {
   const router = useRouter();

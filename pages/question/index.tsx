@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { RootState } from "redux/store";
 import { useRouter } from 'next/router';
-import Question from "../../app/components/question/Question";
+import Question from "app/components/question/Question";
 
 export default function QuestionPage() {
   const router = useRouter();

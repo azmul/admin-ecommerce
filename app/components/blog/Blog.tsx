@@ -27,7 +27,7 @@ import useTranslation from "next-translate/useTranslation";
 import ImageUploader from "../imageUploader";
 import * as CategoryApi from "../category/CategoryApi";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
+import { RootState } from "redux/store";
 import moment from "moment";
 import { capitalize, remove } from "lodash";
 import styles from "./Styles.module.scss";
@@ -36,7 +36,7 @@ import {
   MinusCircleOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
-import { DateFormats } from "../../date/dateConst";
+import { DateFormats } from "app/date/dateConst";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;

@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { RootState } from "redux/store";
 import { useRouter } from 'next/router';
-import Setting from "../../app/components/setting/Setting";
+import Setting from "app/components/setting/Setting";
 
 export default function SettingPage() {
   const router = useRouter();

@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Menu } from 'antd';
 import { LogoutOutlined,ToolOutlined, CommentOutlined, InsertRowAboveOutlined, UsergroupAddOutlined ,TableOutlined, UserOutlined, HomeOutlined, PicLeftOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
-import { useStore } from "../../../redux/hooks";
+import { useStore } from "redux/hooks";
 import {ErrorBoundary} from 'react-error-boundary'
 import ErrorFallback from "../ui/ErrorFallback"
 import useTranslation from 'next-translate/useTranslation'

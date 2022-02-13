@@ -15,7 +15,7 @@ import {
 import * as TagApi from "./TagApi";
 import useTranslation from "next-translate/useTranslation";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
+import { RootState } from "redux/store";
 import moment from "moment";
 import { capitalize } from "lodash";
 

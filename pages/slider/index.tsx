@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { RootState } from "redux/store";
 import { useRouter } from 'next/router';
-import Category from "../../app/components/slider/Slider";
+import Category from "app/components/slider/Slider";
 
 export default function TagPage() {
   const router = useRouter();

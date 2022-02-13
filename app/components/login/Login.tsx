@@ -6,7 +6,7 @@ import styles from "./Login.module.scss";
 import { useRouter } from 'next/router'
 import { LoginRequestType } from "./LoginType";
 import * as loginApi from "./LoginApi";
-import { useStore } from "../../../redux/hooks";
+import { useStore } from "redux/hooks";
 import {ErrorBoundary} from 'react-error-boundary'
 import ErrorFallback from "../ui/ErrorFallback"
 import useTranslation from 'next-translate/useTranslation'

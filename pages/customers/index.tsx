@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { RootState } from "redux/store";
 import { useRouter } from 'next/router';
-import Orders from "../../app/components/customers/Customers";
+import Orders from "app/components/customers/Customers";
 
 export default function PasswordPage() {
   const router = useRouter();

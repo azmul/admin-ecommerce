@@ -25,7 +25,7 @@ import ImageUploader from "../imageUploader";
 import * as CategoryApi from "../category/CategoryApi";
 import * as TagApi from "../tag/TagApi";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
+import { RootState } from "redux/store";
 import moment from "moment";
 import { capitalize } from "lodash";
 import styles from "./Styles.module.scss";
@@ -34,7 +34,7 @@ import {
   MinusCircleOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
-import { DateFormats } from "../../date/dateConst";
+import { DateFormats } from "app/date/dateConst";
 import Reviews from "./Reviews";
 import Questions from "./Question";
 import { COLORS } from "../common/colorConts";

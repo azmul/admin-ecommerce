@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import qs from "query-string";
 import { message } from "antd";
 import { ResponseStatus } from "./apiConst";
-import store from "../../redux/store";
+import store from "redux/store";
 
 /**
  * Axios error interceptor

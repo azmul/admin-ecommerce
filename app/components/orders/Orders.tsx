@@ -18,14 +18,14 @@ import {
 } from "antd";
 import * as ProductsApi from "./OrdersApi";
 import useTranslation from "next-translate/useTranslation";
-import { PAYMENT, DELIVERY } from "../../api/commonConst";
+import { PAYMENT, DELIVERY } from "app/api/commonConst";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
+import { RootState } from "app/../redux/store";
 import moment from "moment";
 import { capitalize } from "lodash";
 import styles from "./Styles.module.scss";
 import { UserOutlined } from "@ant-design/icons";
-import { DateFormats } from "../../date/dateConst";
+import { DateFormats } from "app/date/dateConst";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;

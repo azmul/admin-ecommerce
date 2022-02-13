@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { RootState } from "redux/store";
 import { useRouter } from 'next/router';
-import Review from "../../app/components/review/Review";
+import Review from "app/components/review/Review";
 
 export default function ReviewPage() {
   const router = useRouter();

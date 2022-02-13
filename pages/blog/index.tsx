@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { RootState } from "redux/store";
 import { useRouter } from 'next/router';
-import Blog from "../../app/components/blog/Blog";
+import Blog from "app/components/blog/Blog";
 
 export default function BlogPage() {
   const router = useRouter();
