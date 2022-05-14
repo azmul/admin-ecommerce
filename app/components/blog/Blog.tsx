@@ -29,7 +29,7 @@ import * as CategoryApi from "../category/CategoryApi";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/store";
 import moment from "moment";
-import { capitalize, remove } from "lodash";
+import { capitalize, remove, kebabCase } from "lodash";
 import styles from "./Styles.module.scss";
 import {
   UserOutlined,
@@ -138,6 +138,8 @@ export default function Link() {
     } else {
       values.picture_url = undefined;
     }
+    values.url = kebabCase(values.url);
+    
     try {
       setloading(true);
       values.last_updated_by = profile?.name;
@@ -174,6 +176,7 @@ export default function Link() {
       const item: any = await BlogApi.getItem(id);
       form.setFieldsValue({
         title: item.title,
+        url: item.url,
         title_local: item.title_local,
         content: item.content,
         content_local: item.content_local,
@@ -217,6 +220,7 @@ export default function Link() {
     setImageData([]);
     form.setFieldsValue({
       title: null,
+      url: null,
       title_local: null,
       content: null,
       content_local: null,
@@ -416,8 +420,22 @@ export default function Link() {
             >
               <Input />
             </Form.Item>
+          
             <Form.Item label="Title Local" name="title_local">
               <Input />
+            </Form.Item>
+            <Form.Item
+              label="Url"
+              name="url"
+              rules={[
+                {
+                  whitespace: false,
+                  required: true,
+                  message: "Please give url",
+                },
+              ]}
+            >
+              <Input placeholder="Url" />
             </Form.Item>
             <Form.Item
               label="Like Count"

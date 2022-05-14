@@ -27,7 +27,7 @@ import * as TagApi from "../tag/TagApi";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/store";
 import moment from "moment";
-import { capitalize } from "lodash";
+import { capitalize, kebabCase } from "lodash";
 import styles from "./Styles.module.scss";
 import {
   UserOutlined,
@@ -148,6 +148,7 @@ export default function Link() {
     if(values.variation && values.variation.length === 0) {
       values.variation = null;
     }
+    values.url = kebabCase(values.url);
     try {
       setloading(true);
       values.last_updated_by = profile?.name;
@@ -185,6 +186,7 @@ export default function Link() {
       form.setFieldsValue({
         sku: item.sku,
         name: item.name,
+        url: item.url,
         name_local: item.name_local,
         price: item.price,
         discount: item.discount,
@@ -236,6 +238,7 @@ export default function Link() {
       sku: null,
       name: null,
       name_local: null,
+      url: null,
       price: null,
       discount: null,
       offerEnd: null,
@@ -453,6 +456,19 @@ export default function Link() {
             </Form.Item>
             <Form.Item label="Name Local" name="name_local">
               <Input placeholder="Name Local" />
+            </Form.Item>
+            <Form.Item
+              label="Url"
+              name="url"
+              rules={[
+                {
+                  whitespace: false,
+                  required: true,
+                  message: "Please give url",
+                },
+              ]}
+            >
+              <Input placeholder="Url" />
             </Form.Item>
             <Row justify="space-between">
               <Col md={10}>
